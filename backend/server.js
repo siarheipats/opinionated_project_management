@@ -1,7 +1,18 @@
+require('dotenv').config();
+
 const express = require('express');
+
+// Constants
+const PORT = process.env.PORT
 
 // Express
 const app = express()
+
+// Middleware
+// 1. This is a logger for requests
+app.use((req, res, next) => {
+    console.log(req.path, req.method)
+})
 
 // Routes
 app.get('/', (req, res) => {
@@ -9,6 +20,6 @@ app.get('/', (req, res) => {
 })
 
 // Listen
-app.listen(4000,() => {
-    console.log('API is listening on port 4000')
+app.listen(PORT,() => {
+    console.log(`API is listening on ${PORT}`)
 })
