@@ -20,3 +20,7 @@ Routes:
    "lastName": "[lastName]",
    "password" : "[password]"
    }
+
+TODO:
+
+1. user.js model - add password encryption.
