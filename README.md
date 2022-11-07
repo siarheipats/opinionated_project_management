@@ -1,0 +1,1 @@
+db.sql contains the queries for the db. Please update it as you continue developing the database.
