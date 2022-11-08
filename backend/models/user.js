@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelize } = require("../db_connector");
+const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 const Customers = sequelize.define("Customers", {
     customerId: {
@@ -34,21 +36,67 @@ const Customers = sequelize.define("Customers", {
 
 async function signup (email, phoneNumber, firstName, lastName, password) 
 {
-    const exist = await Customers.findOne({where: {email: email} });
-    if(exist) {
-        throw Error('Email already in use')
+    // Validation
+    if (!email || !phoneNumber || !firstName || !lastName || !password) {
+        throw Error('All fields must be filled.')
+    }
+    if(!validator.isEmail(email)) {
+        throw Error('Email is not valid.')
     }
 
-    // Hash Password Here
+    /*
+    https://www.npmjs.com/package/validator
+    Check if a password is strong or not. Allows for custom requirements or scoring rules. 
+    If returnScore is true, then the function returns an integer score for the password rather than a boolean.
+    Default options: 
+    { 
+        minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1, 
+        returnScore: false, pointsPerUnique: 1, pointsPerRepeat: 0.5, pointsForContainingLower: 10, 
+        pointsForContainingUpper: 10, pointsForContainingNumber: 10, pointsForContainingSymbol: 10 }
+    */
+    if(!validator.isStrongPassword(password)){
+        throw Error('Password not strong enough.')
+    }
+
+
+    const exist = await Customers.findOne({where: {email: email} });
+    if(exist) {
+        throw Error('Email is already in use.')
+    }
+
+    // bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
     
-    const user = await Customers.create({
+    const newUser = await Customers.create({
         email: email,
         phoneNumber: phoneNumber,
         firstName: firstName,
         lastName: lastName,
-        password: password
+        password: hash
     })
+    const user = await Customers.findOne({where: {email: email} });
     return user;
 }
 
-module.exports = (signup)
+// login user
+async function login (email, password) {
+    // Validation
+    if (!email || !password) {
+        throw Error('All fields must be filled.')
+    }
+
+    const user = await Customers.findOne({where: {email: email} });
+    if(!user) {
+        throw Error('Incorrect Email.')
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if(!match) {
+        throw Error('Incorrect Password.')
+    }
+    return user;
+}
+
+exports.signup = signup;
+exports.login = login;
+
