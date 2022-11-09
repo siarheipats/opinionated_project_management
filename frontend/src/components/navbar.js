@@ -9,7 +9,7 @@ const Navbar = () => {
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, [FirstName] [LastName]</a>
+                        <span class="navbar-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, [FirstName] [LastName]</span>
                     </li>
                 </ul>
                 <span class="navbar-text">
