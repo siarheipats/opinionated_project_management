@@ -23,9 +23,9 @@ const loginUser = async (req, res) => {
 const signupUser = async (req, res) => {
     const {email, phoneNumber, firstName, lastName, password} = req.body;
     try {
-        const newUser = await userModel.signup(email, phoneNumber, firstName, lastName, password);
-        const token = createToken(newUser.customerId);
-        res.status(200).json({newUser, token})
+        const user = await userModel.signup(email, phoneNumber, firstName, lastName, password);
+        const token = createToken(user.customerId);
+        res.status(200).json({user, token})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
