@@ -1,4 +1,14 @@
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 const Navbar = () => {
+    const { logout } = useLogout();
+    const {user} = useAuthContext()
+
+    const handleLogout = () => {
+        logout();
+    }
+
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -9,11 +19,11 @@ const Navbar = () => {
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <span class="navbar-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, [FirstName] [LastName]</span>
+                        <span class="navbar-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome, {user.user.firstName} {user.user.lastName}</span>
                     </li>
                 </ul>
                 <span class="navbar-text">
-                    <button class="btn btn-primary" type="button">Logout</button>
+                    <button class="btn btn-primary" type="button" onClick={handleLogout}>Log out</button>
                 </span>
             </div>
         </div>
