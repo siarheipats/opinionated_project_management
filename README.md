@@ -18,7 +18,28 @@ $ cd opinionated_project_management/backend
 $ npm install
 $ npm start
 ```
+then doing the same for the frontend, while leaving the backend running
+``` 
+$ cd opinionated_project_management/frontend
+$ npm install
+$ npm start
+```
 
-The App is running now and listening on port 4000.
+API requests can be seen in the window terminal where the backend is running, for example:
+```
+[~/opinionated_project_management/backend$] npm start
+
+> backend@1.0.0 start
+> node server.js
+
+API is listening on 4000
+Executing (default): SELECT 1+1 AS result
+Connection has been established successfully.
+/ GET
+/api/user/login POST
+/api/user/login POST
+Executing (default): SELECT `customerId`, `email`, `phoneNumber`, `firstName`, `lastName`, `password` FROM `Customers` AS `Customers` WHERE `Customers`.`email` = 'adam@people.net'
+```
+The App's backend is runs on port 4000 while the frontend is on port 3000.
 
 db.sql contains the queries for the db. Please update it as you continue developing the database.
