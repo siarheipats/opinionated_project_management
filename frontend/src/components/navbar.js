@@ -1,18 +1,23 @@
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { IoMdSettings } from "react-icons/io"
+import { useState } from "react";
 
-const Navbar = () => {
+const Navbar = (props) => {
     const { logout } = useLogout();
-    const { user } = useAuthContext()
+    const { user } = useAuthContext();
 
+    const handleSettingsClick = () =>
+    {
+        props.settingsToggle();
+    };
+    
     const handleLogout = () => {
         logout();
     }
 
-    const handleSettings = () => {
+    
 
-    }
 
     return (
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,9 +33,7 @@ const Navbar = () => {
                     </li>
                 </ul>
                 <span class="navbar-text">
-                    <a href="/settings">
-                        <IoMdSettings size="50px" style={{paddingRight: 20}} onClick={handleSettings}/>
-                    </a>
+                    <button class="btn btn-primary" type="button" onClick={handleSettingsClick}>Settings</button>
                 </span>
                 <span class="navbar-text">
                     <button class="btn btn-primary" type="button" onClick={handleLogout}>Log out</button>
