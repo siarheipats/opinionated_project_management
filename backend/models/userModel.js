@@ -103,11 +103,13 @@ async function updateName (customerId, firstName, lastName) {
         throw Error("All fields must be filled.")
     }
 
-    const user = await Customers.update({ lastName: lastName, firstName: firstName}, {
+    await Customers.update({ lastName: lastName, firstName: firstName}, {
         where: {
             customerId: customerId
         }
     })
+
+    const user = await Customers.findOne({where: {customerId: customerId} });
     return user;
 }
 
@@ -130,12 +132,13 @@ async function updatePassword(customerId, oldPassword, newPassword) {
     if(!match) {
         throw Error('Incorrect Password.')
     }
-    const result = Customers.update({password: hash}, {
+    await Customers.update({password: hash}, {
         where: {
             customerId: customerId
         }
     });
-    return result;
+    const user2 = await Customers.findOne({where: {customerId: customerId} });
+    return user2;
 }
 
 exports.signup = signup;

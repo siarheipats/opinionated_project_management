@@ -1,15 +1,21 @@
 import { useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
+import {useUpdateName} from "../hooks/useUpdateName"
+
 
 const Settings = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const { user } = useAuthContext();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const {updateName, error, isLoading} = useUpdateName();
 
-    const updateName = async (e) => {
+    const handleUpdateName = async (e) => {
         e.preventDefault();
-        // update name
+        await updateName(user.user.customerId, firstName, lastName);
+        
     }
 
     const updatePassword = async (e) => {
@@ -20,7 +26,7 @@ const Settings = () => {
     return (
         <div>
             <main class="form-signin w-100 m-auto">
-                <form onSubmit={updateName}>
+                <form onSubmit={handleUpdateName}>
                     <h1 class="h3 mb-3 fw-normal">Personal Information</h1>
                     <div class="form-floating">
                         <input 
@@ -43,8 +49,8 @@ const Settings = () => {
                             value={lastName}
                         />
                         <label for="floatingInput">Last Name</label>
-                        <button class="w-100 btn btn-lg btn-primary" type="submit" >Update</button>
-                        
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" disabled={isLoading}>Update</button>
+                        {error && <div>{error}</div>}
                     </div>
                 </form>
             </main> 

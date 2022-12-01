@@ -22,7 +22,7 @@ const Login = () => {
                             type="email" 
                             class="form-control" 
                             id="floatingInput" 
-                            placeholder="name@example.com"
+                            placeholder="nameuseUs@example.com"
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
                         />
