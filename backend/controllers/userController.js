@@ -31,5 +31,26 @@ const signupUser = async (req, res) => {
     }
 }
 
+// update name
+const updateName = async (req, res) => {
+    const {customerId,firstName, lastName} = req.body;
+    try {
+        const user = await userModel.updateName(customerId, firstName, lastName);
+        res.status(200).json({user});
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
-module.exports = {signupUser, loginUser}
+// update password
+const updatePassword = async (req, res) => {
+    const {customerId, oldPassword, newPassword} = req.body;
+    try {
+        const response = await userModel.updatePassword(customerId, oldPassword, newPassword);
+        res.status(200).json({response});
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+module.exports = {signupUser, loginUser, updateName, updatePassword}

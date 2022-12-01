@@ -97,6 +97,49 @@ async function login (email, password) {
     return user;
 }
 
+// update name
+async function updateName (customerId, firstName, lastName) {
+    if (!firstName || !lastName) {
+        throw Error("All fields must be filled.")
+    }
+
+    const user = await Customers.update({ lastName: lastName, firstName: firstName}, {
+        where: {
+            customerId: customerId
+        }
+    })
+    return user;
+}
+
+// change password
+async function updatePassword(customerId, oldPassword, newPassword) {
+    if (!oldPassword || !newPassword) {
+        throw Error("All fields must be filled.")
+    }
+    if(!validator.isStrongPassword(newPassword)){
+        throw Error('New password not strong enough.')
+    }
+
+    // bcrypt
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newPassword, salt);
+    // get the user
+    const user = await Customers.findOne({where: {customerId: customerId}});
+    const match = await bcrypt.compare(oldPassword, user.password);
+    // check if the password matched
+    if(!match) {
+        throw Error('Incorrect Password.')
+    }
+    const result = Customers.update({password: hash}, {
+        where: {
+            customerId: customerId
+        }
+    });
+    return result;
+}
+
 exports.signup = signup;
 exports.login = login;
+exports.updateName = updateName;
+exports.updatePassword = updatePassword;
 

@@ -4,6 +4,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/home'
 import Signup from './pages/signup';
 import Dashboard from './pages/dashboard'
+import Settings from './pages/settings';
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
             <Route
               path = '/dashboard'
               element={<Dashboard/>}
+            />
+            <Route
+              path = '/settings'
+              element={<Settings/>}
             />
           </Routes>
         </div>
