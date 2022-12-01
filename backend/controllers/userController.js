@@ -44,9 +44,9 @@ const updateName = async (req, res) => {
 
 // update password
 const updatePassword = async (req, res) => {
-    const {customerId, oldPassword, newPassword} = req.body;
+    const {customerId, oldPassword, newPassword, confirmNewPassword} = req.body;
     try {
-        const response = await userModel.updatePassword(customerId, oldPassword, newPassword);
+        const response = await userModel.updatePassword(customerId, oldPassword, newPassword, confirmNewPassword);
         res.status(200).json({response});
     } catch (error) {
         res.status(400).json({error: error.message})

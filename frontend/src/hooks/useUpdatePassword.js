@@ -2,18 +2,17 @@ import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
 export const useUpdatePassword = () => {
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(null);
-    const {dispatch} = useAuthContext();
+    const [errorPwd, setError] = useState(null);
+    const [isLoadingPwd, setIsLoading] = useState(null);
 
-    const updatePassword = async (customerId, oldPassword, newPassword) => {
+    const updatePassword = async (customerId, oldPassword, newPassword, confirmNewPassword) => {
         setIsLoading(true)
         setError(null)
 
         const response = await fetch ('/api/user/pwdchange', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({customerId, oldPassword, newPassword})
+            body: JSON.stringify({customerId, oldPassword, newPassword, confirmNewPassword})
         })
 
         const json = await response.json();
@@ -25,11 +24,9 @@ export const useUpdatePassword = () => {
         if (response.ok) {
             // save the user's json object to local storage
             localStorage.setItem('user', JSON.stringify(json));
-            // update the AuthContext
-            dispatch({type: 'LOGIN', payload: json})
             setIsLoading(false);
         }
     }
 
-    return {updatePassword, isLoading, error}
+    return {updatePassword, isLoadingPwd, errorPwd}
 }

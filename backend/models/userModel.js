@@ -114,9 +114,13 @@ async function updateName (customerId, firstName, lastName) {
 }
 
 // change password
-async function updatePassword(customerId, oldPassword, newPassword) {
+async function updatePassword(customerId, oldPassword, newPassword, confirmNewPassword) {
     if (!oldPassword || !newPassword) {
         throw Error("All fields must be filled.")
+    }
+    if (newPassword !== confirmNewPassword)
+    {
+        throw Error("Passwords do not match!")
     }
     if(!validator.isStrongPassword(newPassword)){
         throw Error('New password not strong enough.')

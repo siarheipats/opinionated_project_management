@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import {useUpdateName} from "../hooks/useUpdateName"
+import {useUpdatePassword} from "../hooks/useUpdatePassword"
 
 
 const Settings = () => {
@@ -11,6 +12,7 @@ const Settings = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const {updateName, error, isLoading} = useUpdateName();
+    const {updatePassword, errorPwd, isLoadingPwd} = useUpdatePassword();
 
     const handleUpdateName = async (e) => {
         e.preventDefault();
@@ -18,9 +20,9 @@ const Settings = () => {
         
     }
 
-    const updatePassword = async (e) => {
+    const handleUpdatePassword = async (e) => {
         e.preventDefault();
-        //update password
+        await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword)
     }
 
     return (
@@ -55,11 +57,11 @@ const Settings = () => {
                 </form>
             </main> 
             <main class="form-signin w-100 m-auto">
-                <form onSubmit={updatePassword}>
+                <form onSubmit={handleUpdatePassword}>
                     <h1 class="h3 mb-3 fw-normal">Password</h1>
                     <div class="form-floating">
                         <input 
-                            type="email" 
+                            type="password" 
                             class="form-control" 
                             id="floatingInput" 
                             placeholder="name@example.com"
@@ -70,7 +72,7 @@ const Settings = () => {
                     </div>
                     <div class="form-floating">
                         <input 
-                            type="email" 
+                            type="password" 
                             class="form-control" 
                             id="floatingInput" 
                             placeholder="name@example.com"
@@ -81,7 +83,7 @@ const Settings = () => {
                     </div>
                     <div class="form-floating">
                         <input 
-                            type="email" 
+                            type="password" 
                             class="form-control" 
                             id="floatingInput" 
                             placeholder="name@example.com"
@@ -90,8 +92,8 @@ const Settings = () => {
                         />
                         <label for="floatingInput">Confirm Password</label>
                     </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit" >Update</button>
-            
+                    <button class="w-100 btn btn-lg btn-primary" type="submit" disabled={isLoadingPwd}>Update</button>
+                    {errorPwd && <div>{errorPwd}</div>}
                 </form>
             </main>        
         </div>
