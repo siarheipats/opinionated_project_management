@@ -6,3 +6,4 @@ CREATE TABLE `opm`.`Customers` (
   `lastName` VARCHAR(45) NOT NULL,
   `password` VARCHAR(70) NOT NULL,
   PRIMARY KEY (`customerId`)
+)
