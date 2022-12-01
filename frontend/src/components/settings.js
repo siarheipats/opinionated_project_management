@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import {useUpdateName} from "../hooks/useUpdateName"
 import {useUpdatePassword} from "../hooks/useUpdatePassword"
-
 
 const Settings = () => {
     const { user } = useAuthContext();
@@ -16,13 +16,12 @@ const Settings = () => {
 
     const handleUpdateName = async (e) => {
         e.preventDefault();
-        await updateName(user.user.customerId, firstName, lastName);
-        
+        await updateName(user.user.customerId, firstName, lastName); 
     }
 
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
-        await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword)
+        await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword);
     }
 
     return (
