@@ -21,13 +21,23 @@ const getWorkspaces = async (req, res) => {
 }
 
 const updateWorkspaceDetails = async (req, res) => {
-    const {workspaceId, workspaceName} = req.body;
+    const { workspaceId, workspaceName } = req.body;
     try {
         const response = await workspaceModel.updateWorkspaceDetails(workspaceId, workspaceName);
-        res.status(200).json({response});
+        res.status(200).json({ response });
     } catch (error) {
-        res.status(400).json({error: error.message})
+        res.status(400).json({ error: error.message })
     }
 }
 
-module.exports = { createWorkspace, getWorkspaces, updateWorkspaceDetails }
+const deleteWorkspace = async (req, res) => {
+    const { workspaceId } = req.body;
+    try {
+        const response = await workspaceModel.deleteWorkspace(workspaceId);
+        res.status(200).json({ response });
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+module.exports = { createWorkspace, getWorkspaces, updateWorkspaceDetails, deleteWorkspace }
