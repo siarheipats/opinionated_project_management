@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { DataTypes } = require('sequelize');
 const { sequelize } = require("../db_connector");
 
 const Workspaces = sequelize.define("Workspaces", {
@@ -51,8 +51,22 @@ async function createWorkspace(workspaceName, customerId) {
         customerId: customerId,
         workspaceId: newWorkspace['dataValues'].workspaceId
     })
-    
+
     return newWorkspace;
 }
 
+async function getCustomersWorkspaces(customerId) {
+    if (!customerId) {
+        throw Error('Something went wrong. UserId is not found!');
+    }
+    const query = `SELECT CustomerWorkspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated 
+    FROM opm.CustomerWorkspaces
+    JOIN Workspaces ON Workspaces.workspaceId = CustomerWorkspaces.workspaceId
+    WHERE CustomerWorkspaces.customerId = ${customerId};`
+    //console.log(query)
+    const workspaces = await sequelize.query(query, { model: Workspaces, mapToModel: true })
+    return workspaces;
+}
+
 exports.createWorkspace = createWorkspace;
+exports.getCustomersWorkspaces = getCustomersWorkspaces;

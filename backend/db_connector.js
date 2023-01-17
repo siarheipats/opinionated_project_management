@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 
-const Sequelize = require("sequelize");
+const { Sequelize, QueryTypes } = require("sequelize");
 
 const HOST = process.env.DB_HOST;
 const USER = process.env.DB_USER;
@@ -18,7 +18,7 @@ const sequelize = new Sequelize(
         define: {
             timestamps: false
         }
-    } 
+    }
 )
 
 module.exports.sequelize = sequelize;
