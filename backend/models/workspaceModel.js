@@ -68,5 +68,18 @@ async function getCustomersWorkspaces(customerId) {
     return workspaces;
 }
 
+async function updateWorkspaceDetails(workspaceId, workspaceName) {
+    if (!workspaceId || !workspaceName) {
+        throw Error("All fields must be filled.")
+    }
+
+    await Workspaces.update({ workspaceName: workspaceName }, {
+        where: {
+            workspaceId: workspaceId
+        }
+    })
+}
+
 exports.createWorkspace = createWorkspace;
 exports.getCustomersWorkspaces = getCustomersWorkspaces;
+exports.updateWorkspaceDetails = updateWorkspaceDetails;

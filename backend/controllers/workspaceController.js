@@ -20,4 +20,14 @@ const getWorkspaces = async (req, res) => {
     }
 }
 
-module.exports = { createWorkspace, getWorkspaces }
+const updateWorkspaceDetails = async (req, res) => {
+    const {workspaceId, workspaceName} = req.body;
+    try {
+        const response = await workspaceModel.updateWorkspaceDetails(workspaceId, workspaceName);
+        res.status(200).json({response});
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+module.exports = { createWorkspace, getWorkspaces, updateWorkspaceDetails }
