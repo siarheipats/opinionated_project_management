@@ -1,24 +1,24 @@
 import { useAuthContext } from "../hooks/useAuthContext";
 
 // pages
-import Dashboard from './dashboard'
-import Login from './login'
+import Dashboard from './Dashboard'
+import Login from './Login'
 
 const Home = () => {
-    
-    const {user} = useAuthContext()
 
-    return(
+    const { user } = useAuthContext()
+
+    return (
         <div>
             {user && (
-            <div>
-                <Dashboard/>
-            </div>
+                <div>
+                    <Dashboard />
+                </div>
             )}
             {!user && (
-            <div>
-                <Login/>
-            </div>
+                <div>
+                    <Login />
+                </div>
             )}
         </div>
     )
