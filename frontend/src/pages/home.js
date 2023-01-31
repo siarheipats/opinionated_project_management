@@ -2,7 +2,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 // pages
 import Dashboard from './Dashboard'
-import Login from './Login'
+import LandingPage from './LandingPage'
 
 const Home = () => {
 
@@ -11,14 +11,10 @@ const Home = () => {
     return (
         <div>
             {user && (
-                <div>
-                    <Dashboard />
-                </div>
+                <Dashboard />
             )}
             {!user && (
-                <div>
-                    <Login />
-                </div>
+                <LandingPage />
             )}
         </div>
     )
