@@ -3,13 +3,15 @@ import { useAuthContext } from "../hooks/useAuthContext";
 // pages
 import Dashboard from './Dashboard'
 import LandingPage from './LandingPage'
+import NavBar from '../components/navbar';
 
 const Home = () => {
 
-    const { user } = useAuthContext()
+    const { user } = useAuthContext();
 
     return (
         <div>
+            <NavBar />
             {user && (
                 <Dashboard />
             )}
