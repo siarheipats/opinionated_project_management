@@ -9,11 +9,12 @@ const { createWorkspace,
 router.post('/create', createWorkspace)
 
 // get all workspaces for a user
-router.get('/workspaces', getWorkspaces)
+router.get('/workspaces/:_customerId', getWorkspaces)
 
 // update workspace details
 router.put('/update', updateWorkspaceDetails)
 
 //delete workspace
 router.delete('/delete', deleteWorkspace)
+
 module.exports = router;

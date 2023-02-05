@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
+import React from "react";
+
 
 
 // MUI
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
@@ -45,13 +44,11 @@ function a11yProps(index) {
 }
 
 const Settings = () => {
-    const { user } = useAuthContext();
+
     const [value, setValue] = React.useState(1);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
-    const theme = createTheme();
 
     return (
         <React.Fragment>
