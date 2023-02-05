@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 const style = {
     position: 'absolute',
@@ -26,6 +25,7 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
 
     const handleClose = () => {
         showModal = false;
+        setWorkspaceName("");
         handleCloseModalFunction();
     };
 
@@ -46,7 +46,7 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
 
     const handleCreateWorkspace = async (e) => {
         e.preventDefault();
-        var response = await newWorkspace(workspaceName, customerId);
+        await newWorkspace(workspaceName, customerId);
         handleClose();
     }
 
