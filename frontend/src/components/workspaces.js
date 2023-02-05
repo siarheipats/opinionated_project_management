@@ -8,25 +8,16 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import Modal from '@mui/material/Modal';
+
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
+
 import Typography from '@mui/material/Typography';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import CreateWorkspaceModal from './workspace_components/createWorkspaceModal';
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,13 +30,11 @@ const Item = styled(Paper)(({ theme }) => ({
 const Workspaces = (props) => {
     const { user } = useAuthContext();
     const [workspaces, setWorkspaces] = useState(null);
-    const [workspaceName, setWorkspaceName] = useState("");
-    const [openCreateNewWorkspace, setOpenCreateNewWorkspace] = useState(false);
-
-    const handleOpenCreateNewWorkspace = () => setOpenCreateNewWorkspace(true);
-    const handleCloseCreateNewWorkspace = () => setOpenCreateNewWorkspace(false);
-
+    const [showModal, setShowModal] = useState(false);
     const theme = createTheme();
+
+    const handleOpenModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
 
     useEffect(() => {
         const fetchWorkspaces = async () => {
@@ -63,28 +52,11 @@ const Workspaces = (props) => {
         fetchWorkspaces();
     }, []);
 
-    const newWorkspace = async (workspaceName, customerId) => {
-        const response = await fetch('/api/workspace/create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ workspaceName, customerId })
-        });
-
-        const json = await response.json();
-
-        if (response.ok) {
-            return json;
-        }
-    }
-
-    const handleCreateWorkspace = async (e) => {
-        e.preventDefault();
-        var response = await newWorkspace(workspaceName, user.user.customerId);
-        workspaces.push(response);
-        handleCloseCreateNewWorkspace();
+    const addWorkspaces = (workspace)=> {
+        workspaces.push(workspace);
         setWorkspaces(workspaces);
+        handleCloseModal();
     }
-
 
     return (
         <ThemeProvider theme={theme}>
@@ -104,7 +76,7 @@ const Workspaces = (props) => {
                     </Typography>
                 </Box>
             </Container>
-            <Button onClick={handleOpenCreateNewWorkspace}>
+            <Button onClick={handleOpenModal}>
                 <AddIcon />
                 Create New Workspace
             </Button>
@@ -119,39 +91,11 @@ const Workspaces = (props) => {
                     ))}
                 </Stack>
             </Container>
-            <Modal
-                open={openCreateNewWorkspace}
-                onClose={handleCloseCreateNewWorkspace}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Create New Workspace:
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateWorkspace}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                label="Name"
-                                autoFocus
-                                onChange={(e) => setWorkspaceName(e.target.value)}
-                                value={workspaceName}
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
-                            >
-                                Add
-                            </Button>
-                        </Box>
-                    </Typography>
-                </Box>
-            </Modal>
+            <CreateWorkspaceModal
+                userId={user.user.customerId}
+                showModal={showModal}
+                handleCloseModalFunction={handleCloseModal} 
+                addWorkspaces={addWorkspaces}/>
         </ThemeProvider>
     );
 }
