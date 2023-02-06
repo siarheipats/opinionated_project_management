@@ -57,7 +57,7 @@ async function createWorkspace(workspaceName, customerId) {
 
 async function getCustomersWorkspaces(customerId) {
     if (!customerId) {
-        throw Error('Something went wrong. UserId is not found!');
+        throw Error('Something went wrong. customerId is not found!');
     }
     const query = `SELECT CustomerWorkspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated 
     FROM opm.CustomerWorkspaces

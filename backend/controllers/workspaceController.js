@@ -11,7 +11,7 @@ const createWorkspace = async (req, res) => {
 }
 
 const getWorkspaces = async (req, res) => {
-    const { customerId } = req.body;
+    const customerId = req.params._customerId;
     try {
         const workspaces = await workspaceModel.getCustomersWorkspaces(customerId);
         res.status(200).json(workspaces);

@@ -15,13 +15,42 @@ import ListItemText from '@mui/material/ListItemText';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import SettingsIcon from '@mui/icons-material/Settings';
-import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
+
+import DashboardMain from "../components/dashmain";
+import Settings from "../components/settings";
+import Workspaces from "../components/workspaces";
 
 const drawerWidth = 240;
 
 
+
+
 const Dashboard = () => {
     const { user } = useAuthContext();
+
+    const [showSettings, setShowSettings] = React.useState();
+    const [showWorkspaces, setShowWorkspaces] = React.useState();
+    const [showDashboardMain, setShowDashboardMain] = React.useState(true);
+
+    function goHome() {
+        setShowDashboardMain(true);
+        setShowSettings(false);
+        setShowWorkspaces(false);
+    }
+
+    function showSettingsScreen() {
+        setShowSettings(true);
+        setShowWorkspaces(false);
+        setShowDashboardMain(false);
+    }
+
+    function showWorkspacesScreen() {
+        setShowWorkspaces(true);
+        setShowSettings(false);
+        setShowDashboardMain(false);
+    }
+
     return (
         <div>
             <Box sx={{ display: 'flex' }}>
@@ -50,30 +79,34 @@ const Dashboard = () => {
                     </Toolbar>
                     <Divider />
                     <List>
-                        {['Workspaces'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <WorkspacesIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
+                        <ListItem key='Home' disablePadding>
+                            <ListItemButton onClick={() => goHome()}>
+                                <ListItemIcon>
+                                    <HomeIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Home'} />
+                            </ListItemButton>
 
-                            </ListItem>
-                        ))}
+                        </ListItem>
+                        <ListItem key='Workspaces' disablePadding>
+                            <ListItemButton onClick={() => showWorkspacesScreen()}>
+                                <ListItemIcon>
+                                    <WorkspacesIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Workspaces'} />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                     <Divider />
                     <List>
-                        {['Settings'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <SettingsIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
+                        <ListItem key={'Settings'} disablePadding>
+                            <ListItemButton onClick={() => showSettingsScreen()}>
+                                <ListItemIcon>
+                                    <SettingsIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={'Settings'} />
+                            </ListItemButton>
+                        </ListItem>
                     </List>
                 </Drawer>
                 <Box
@@ -83,6 +116,17 @@ const Dashboard = () => {
                     <Toolbar />
                     <Typography paragraph>
                         <h2>Welcome, {user.user.firstName}.</h2>
+                    </Typography>
+                    <Typography paragraph>
+                        {
+                            showSettings ? <Settings /> : null
+                        }
+                        {
+                            showWorkspaces ? <Workspaces /> : null
+                        }
+                        {
+                            showDashboardMain ? <DashboardMain /> : null
+                        }
                     </Typography>
                 </Box>
             </Box>

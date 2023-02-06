@@ -1,102 +1,81 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
-import {useUpdateName} from "../hooks/useUpdateName"
-import {useUpdatePassword} from "../hooks/useUpdatePassword"
+import React from "react";
 
-const Settings = () => {
-    const { user } = useAuthContext();
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const {updateName, error, isLoading} = useUpdateName();
-    const {updatePassword, errorPwd, isLoadingPwd} = useUpdatePassword();
 
-    const handleUpdateName = async (e) => {
-        e.preventDefault();
-        await updateName(user.user.customerId, firstName, lastName); 
-    }
 
-    const handleUpdatePassword = async (e) => {
-        e.preventDefault();
-        await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword);
-    }
+// MUI
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
+import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
+
+// Components
+import NameChange from "./settings_components/nameChange";
+import EmailChange from "./settings_components/emailChange";
+import PasswordChange from "./settings_components/passwordChange";
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
     return (
-        <div>
-            <main class="form-signin w-100 m-auto">
-                <form onSubmit={handleUpdateName}>
-                    <h1 class="h3 mb-3 fw-normal">Personal Information</h1>
-                    <div class="form-floating">
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="floatingInput" 
-                            placeholder="First Name"
-                            onChange={(e) => setFirstName(e.target.value)}
-                            value={firstName}
-                        />
-                        <label for="floatingInput">First Name</label>
-                    </div>
-                    <div class="form-floating">
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="floatingInput" 
-                            placeholder="Last Name"
-                            onChange={(e) => setLastName(e.target.value)}
-                            value={lastName}
-                        />
-                        <label for="floatingInput">Last Name</label>
-                        <button class="w-100 btn btn-lg btn-primary" type="submit" disabled={isLoading}>Update</button>
-                        {error && <div>{error}</div>}
-                    </div>
-                </form>
-            </main> 
-            <main class="form-signin w-100 m-auto">
-                <form onSubmit={handleUpdatePassword}>
-                    <h1 class="h3 mb-3 fw-normal">Password</h1>
-                    <div class="form-floating">
-                        <input 
-                            type="password" 
-                            class="form-control" 
-                            id="floatingInput" 
-                            placeholder="name@example.com"
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            value={oldPassword}
-                        />
-                        <label for="floatingInput">Previous Password</label>
-                    </div>
-                    <div class="form-floating">
-                        <input 
-                            type="password" 
-                            class="form-control" 
-                            id="floatingInput" 
-                            placeholder="name@example.com"
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            value={newPassword}
-                        />
-                        <label for="floatingInput">New Password</label>
-                    </div>
-                    <div class="form-floating">
-                        <input 
-                            type="password" 
-                            class="form-control" 
-                            id="floatingInput" 
-                            placeholder="name@example.com"
-                            onChange={(e) => setConfirmNewPassword(e.target.value)}
-                            value={confirmNewPassword}
-                        />
-                        <label for="floatingInput">Confirm Password</label>
-                    </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit" disabled={isLoadingPwd}>Update</button>
-                    {errorPwd && <div>{errorPwd}</div>}
-                </form>
-            </main>        
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
         </div>
-    )
+    );
 }
 
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+const Settings = () => {
+
+    const [value, setValue] = React.useState(1);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <React.Fragment>
+            <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Box>
+                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                                <SettingsSharpIcon />
+                            </Avatar>
+                        </Box>
+                        <Tab label="Name" {...a11yProps(1)} />
+                        <Tab label="Email" {...a11yProps(2)} />
+                        <Tab label="Password" {...a11yProps(3)} />
+                    </Tabs>
+                </Box>
+                <TabPanel value={value} index={1}>
+                    <NameChange />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <EmailChange />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <PasswordChange />
+                </TabPanel>
+            </Box>
+        </React.Fragment>
+    )
+}
 export default Settings;
