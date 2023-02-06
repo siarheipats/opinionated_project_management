@@ -7,16 +7,26 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText'
+import EditIcon from '@mui/icons-material/Edit';
 
-const Workspace = ({ workspaceDetails, deleteWorkspace }) => {
-    const workspaceId = workspaceDetails.workspaceId;
 
+const Workspace = ({ workspaceDetails, deleteWorkspace, editWorkspace, setWorkspaceToEdit }) => {
     return (
         <ListItem
             secondaryAction={
-                <IconButton edge="end" aria-label="delete" onClick={() => deleteWorkspace(workspaceDetails.workspaceId)}>
-                    <DeleteIcon />
-                </IconButton>
+                <div>
+                    <IconButton edge="end" aria-label="eidt" style={{ margin: 5 }}>
+                        <EditIcon onClick={() => 
+                            {
+                                editWorkspace(workspaceDetails); 
+                                setWorkspaceToEdit(workspaceDetails)
+                            }
+                        }/>
+                    </IconButton>
+                    <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon onClick={() => deleteWorkspace(workspaceDetails.workspaceId)} />
+                    </IconButton>
+                </div>
             }
         >
             <ListItemAvatar>
@@ -29,7 +39,6 @@ const Workspace = ({ workspaceDetails, deleteWorkspace }) => {
                 secondary={workspaceDetails.dateCreated}
             />
         </ListItem>
-
     )
 }
 

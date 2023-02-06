@@ -41,6 +41,21 @@ const Workspaces = (props) => {
         fetchWorkspaces();
     }, []);
 
+    const updateWorkspaces = () => {
+        const fetchWorkspaces = async () => {
+            const response = await fetch(`/api/workspace/workspaces/${user.user.customerId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+
+            const json = await response.json();
+            if (response.ok) {
+                setWorkspaces(json);
+            }
+        }
+        fetchWorkspaces();
+    }
+
     const addWorkspaces = (workspace) => {
         workspaces.push(workspace);
         setWorkspaces(workspaces);
@@ -80,7 +95,11 @@ const Workspaces = (props) => {
                 <AddIcon />
                 Create New Workspace
             </Button>
-            <WorkspacesList workspacesList={workspaces} deleteWorkspace={deleteWorkspace} />
+            <WorkspacesList
+                workspacesList={workspaces}
+                deleteWorkspace={deleteWorkspace}
+                updateWorkspaces={updateWorkspaces}
+            />
             <CreateWorkspaceModal
                 userId={user.user.customerId}
                 showModal={showModal}
