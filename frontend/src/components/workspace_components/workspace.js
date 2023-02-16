@@ -8,20 +8,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText'
 import EditIcon from '@mui/icons-material/Edit';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 
-const Workspace = ({ workspaceDetails, deleteWorkspace, editWorkspace, setWorkspaceToEdit }) => {
+const Workspace = ({ workspaceDetails, deleteWorkspace, editWorkspace, setWorkspaceToEdit, setSelectedWorkspace }) => {
     return (
         <ListItem
             secondaryAction={
                 <div>
-                    <IconButton edge="end" aria-label="eidt" style={{ margin: 5 }}>
-                        <EditIcon onClick={() => 
-                            {
-                                editWorkspace(workspaceDetails); 
-                                setWorkspaceToEdit(workspaceDetails)
-                            }
-                        }/>
+
+                    <IconButton edge="end" aria-label="open" style={{ margin: 5 }}>
+                        <OpenInNewIcon onClick={() => setSelectedWorkspace(workspaceDetails)} />
+                    </IconButton>
+                    <IconButton edge="end" aria-label="edit" style={{ margin: 5 }}>
+                        <EditIcon onClick={() => {
+                            editWorkspace(workspaceDetails);
+                            setWorkspaceToEdit(workspaceDetails)
+                        }}/>
                     </IconButton>
                     <IconButton edge="end" aria-label="delete">
                         <DeleteIcon onClick={() => deleteWorkspace(workspaceDetails.workspaceId)} />

@@ -14,8 +14,6 @@ export const useUpdatePassword = () => {
             body: JSON.stringify({ customerId, oldPassword, newPassword, confirmNewPassword })
         });
 
-        const json = await response.json();
-
         if (response.ok) {
             setIsLoading(false);
         }

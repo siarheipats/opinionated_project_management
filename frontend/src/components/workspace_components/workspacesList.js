@@ -15,7 +15,7 @@ const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
 
-const WorkspacesList = ({ workspacesList, deleteWorkspace, updateWorkspaces }) => {
+const WorkspacesList = ({ workspacesList, deleteWorkspace, updateWorkspaces, setSelectedWorkspace }) => {
     const [workspaceToEdit, setWorkspaceToEdit] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -44,7 +44,8 @@ const WorkspacesList = ({ workspacesList, deleteWorkspace, updateWorkspaces }) =
                                         workspaceDetails={workspace}
                                         deleteWorkspace={deleteWorkspace}
                                         editWorkspace={handleOpenModal}
-                                        setWorkspaceToEdit={setWorkspaceToEdit} />
+                                        setWorkspaceToEdit={setWorkspaceToEdit}
+                                        setSelectedWorkspace={setSelectedWorkspace} />
                                 )}
                             </List>
                         </Demo>
