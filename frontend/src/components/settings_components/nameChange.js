@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUpdateName } from "../../hooks/useUpdateName";
+import { useNavigate } from 'react-router-dom'
 
 // MUI
 import Avatar from '@mui/material/Avatar';
@@ -17,8 +19,14 @@ const NameChange = () => {
     const { user } = useAuthContext();
     const [firstName, setFirstName] = useState(user.user.firstName);
     const [lastName, setLastName] = useState(user.user.lastName);
-
+    const { updateName, error, isLoading } = useUpdateName();
     const theme = createTheme();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await updateName(user.user.customerId, firstName, lastName);
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -37,7 +45,7 @@ const NameChange = () => {
                         Change Name:
                     </Typography>
                     <br />
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
