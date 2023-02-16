@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useUpdateName } from "../../hooks/useUpdateName";
-import { useNavigate } from 'react-router-dom'
 
 // MUI
 import Avatar from '@mui/material/Avatar';
@@ -21,7 +20,6 @@ const NameChange = () => {
     const [lastName, setLastName] = useState(user.user.lastName);
     const { updateName, error, isLoading } = useUpdateName();
     const theme = createTheme();
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();

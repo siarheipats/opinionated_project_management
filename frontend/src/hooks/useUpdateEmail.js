@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
-export const useUpdateName = () => {
+export const useUpdateEmail = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
     const { dispatch } = useAuthContext();
 
-    const updateName = async (customerId, firstName, lastName) => {
+    const updateEmail = async (customerId, email) => {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('/api/user/update', {
+        const response = await fetch('/api/user/emailchange', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ customerId, firstName, lastName })
+            body: JSON.stringify({ customerId, email })
         });
 
         const json = await response.json();
@@ -25,5 +25,5 @@ export const useUpdateName = () => {
             setIsLoading(false);
         }
     }
-    return { updateName, isLoading, error }
+    return { updateEmail, isLoading, error }
 }
