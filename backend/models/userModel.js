@@ -134,13 +134,11 @@ async function updatePassword(customerId, oldPassword, newPassword, confirmNewPa
     if (!match) {
         throw Error('Incorrect Password.')
     }
-    await Customers.update({ password: hash }, {
+    return await Customers.update({ password: hash }, {
         where: {
             customerId: customerId
         }
     });
-    const user2 = await Customers.findOne({ where: { customerId: customerId } });
-    return user2;
 }
 
 async function updateEmail(customerId, email) {
@@ -153,6 +151,7 @@ async function updateEmail(customerId, email) {
             customerId: customerId
         }
     })
+
     const user = await Customers.findOne({ where: { customerId: customerId } });
     return user;
 }
