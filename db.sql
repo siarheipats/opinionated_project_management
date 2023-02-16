@@ -17,7 +17,7 @@ CREATE TABLE `opm`.`Workspaces` (
   FOREIGN KEY (`teamId`) REFERENCES `Teams` (`teamId`)
 );
 
-CREATE TABLE `opm`. `Teams` (
+CREATE TABLE `opm`.`Teams` (
 	`teamId` int NOT NULL AUTO_INCREMENT,
     `teamName` varchar(255) NULL,
 	PRIMARY KEY (`teamId`)
@@ -63,8 +63,8 @@ CREATE TABLE `opm`.`Boards` (
 CREATE TABLE `opm`.`Tasks` (
 	`taskId` int NOT NULL AUTO_INCREMENT,
 	`boardId` int NOT NULL, 
-	`taskName` varchar(255),
-	`taskInfo` text(65535),
+	`taskName` varchar(255) NULL,
+	`taskInfo` text(65535) NULL,
 	`taskDueDate` datetime DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`taskId`),
 	FOREIGN KEY (`boardId`) REFERENCES `Boards` (`boardId`)
