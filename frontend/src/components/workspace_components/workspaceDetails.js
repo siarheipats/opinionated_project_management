@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import BoardsMain from '../boardsMain';
+import PeopleMain from '../peopleMain';
 
 const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
     const [tabValue, setTabValue] = React.useState(0);
@@ -75,7 +76,7 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                     <BoardsMain/>
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                    People
+                    <PeopleMain/>
                 </TabPanel>
             </Box>
 
