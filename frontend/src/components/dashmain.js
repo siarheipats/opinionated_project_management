@@ -1,4 +1,5 @@
 import { useAuthContext } from "../hooks/useAuthContext";
+import WorkspaceDetails from "./workspace_components/workspaceDetails";
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -19,9 +20,7 @@ const DashboardMain = ({ openedWorkspace, closeWorkspace }) => {
         }
         else {
             return (
-                <div>{openedWorkspace.workspaceName}
-                    <button onClick={() => closeWorkspace()}>Close</button>
-                </div>
+                <WorkspaceDetails workspace={openedWorkspace} closeWorkspace={closeWorkspace} />
             )
         }
     }
