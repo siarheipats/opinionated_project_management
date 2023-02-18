@@ -2,20 +2,24 @@ const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
 
 const Boards = sequelize.define("Workspaces", {
-    workspaceId: {
+    boardId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    workspaceName: {
-        type: DataTypes.STRING,
-        allowNull: false
+    workspaceId: {
+        type: DataTypes.INTEGER,
+        //foreignKey: ''
     },
-    dateCreated: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
+    boardName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    categoryName: {
+      type: DataTypes.STRING,
+      allowNull: false
+  },
 },
     {
         timestapms: false
