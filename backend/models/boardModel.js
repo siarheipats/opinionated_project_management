@@ -1,109 +1,86 @@
 const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
 
-const Boards = sequelize.define("Workspaces", {
+const Boards = sequelize.define("Boards", {
     boardId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    workspaceId: {
-        type: DataTypes.INTEGER,
-        //foreignKey: ''
-    },
     boardName: {
-      type: DataTypes.STRING,
-      allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    categoryName: {
-      type: DataTypes.STRING,
-      allowNull: false
-  },
-},
-    {
-        timestapms: false
-    });
-
-const CustomerWorkspaces = sequelize.define("CustomerWorkspaces", {
-    CustomerWorkspacesId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true
-    },
-    customerId: {
-        type: DataTypes.INTEGER
+    boardDescription: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     workspaceId: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'Workspaces',
+            key: 'workspaceId'
+        }
     }
 },
     {
-        timestapms: false
+        timestamps: false
     });
 
-async function createWorkspace(workspaceName, customerId) {
-    if (!workspaceName || !customerId) {
+async function createBoards(boardName, boardDescription, workspaceId) {
+    if (!boardName || !boardDescription || !workspaceId ) {
         throw Error('All fields must be filled')
     }
-
-    const newWorkspace = await Workspaces.create({
-        workspaceName: workspaceName,
-        dateCreated: new Date().toLocaleString()
-
-    })
-    const associateWorkspaceWithUser = await CustomerWorkspaces.create({
-        customerId: customerId,
-        workspaceId: newWorkspace['dataValues'].workspaceId
-    })
-
-    return newWorkspace;
-}
-
-async function getCustomersWorkspaces(customerId) {
-    if (!customerId) {
-        throw Error('Something went wrong. customerId is not found!');
+    const workspace = await Workspaces.findOne({ where: { workspaceId: workspaceId } });
+    if (!workspace) {
+      throw Error("Invalid workspace ID");
     }
-    const query = `SELECT CustomerWorkspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated 
-    FROM opm.CustomerWorkspaces
-    JOIN Workspaces ON Workspaces.workspaceId = CustomerWorkspaces.workspaceId
-    WHERE CustomerWorkspaces.customerId = ${customerId};`
-    //console.log(query)
-    const workspaces = await sequelize.query(query, { model: Workspaces, mapToModel: true })
-    return workspaces;
+    const newBoards = await Boards.create({
+        boardId: null, // auto-increment field, set to null to let Sequelize generate a new value
+        boardName: boardName,
+        boardDescription : boardDescription,
+        workspaceId: workspaceId
+    })
+
+    return newBoards;
 }
 
-async function updateWorkspaceDetails(workspaceId, workspaceName) {
-    if (!workspaceId || !workspaceName) {
+async function readBoards() {
+    const boards = await Boards.findAll();
+    return boards;
+}
+
+async function updateBoards(boardId, boardName, boardDescription) {
+    if (!boardId || !boardName || !boardDescription) {
         throw Error("All fields must be filled.")
     }
 
-    await Workspaces.update({ workspaceName: workspaceName }, {
+    await Boards.update({ 
+        boardName: boardName,
+        boardDescription : boardDescription 
+    }, {
         where: {
-            workspaceId: workspaceId
+            boardId: boardId
         }
     })
 }
 
-async function deleteWorkspace(workspaceId) {
-    if (!workspaceId) {
+async function deleteBoards(boardId, boardName) {
+    if (!boardId || !boardName) {
         throw Error("All fields must be filled.")
     }
 
-    await CustomerWorkspaces.destroy({
+    // associate tasks with boards and delete tasks with boards?
+
+    await Boards.destroy({
         where: {
-            workspaceId: workspaceId
-        }
-    });
-    // If we would like to archive workspaces instead of deleting them
-    // this is the place to do it
-    await Workspaces.destroy({
-        where: {
-            workspaceId: workspaceId
+            boardId: boardId
         }
     })
 }
 
-exports.createWorkspace = createWorkspace;
-exports.getCustomersWorkspaces = getCustomersWorkspaces;
-exports.updateWorkspaceDetails = updateWorkspaceDetails;
-exports.deleteWorkspace = deleteWorkspace;
+exports.createBoards = createBoards;
+exports.readBoards = readBoards;
+exports.updateBoards = updateBoards;
+exports.deleteBoards = deleteBoards;
