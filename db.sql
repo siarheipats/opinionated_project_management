@@ -29,3 +29,29 @@ CREATE TABLE CustomerWorkspaces (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+CREATE TABLE `opm`.`Boards` (
+	`boardId` int NOT NULL AUTO_INCREMENT,
+	`workspaceId` int NOT NULL, 
+	`boardName` varchar(255) NULL,
+	`boardDescription` text(65535) NULL,
+	PRIMARY KEY (`boardId`),
+	FOREIGN KEY (`workspaceId`) REFERENCES `Workspaces` (`workspaceId`)
+);
+
+CREATE TABLE `opm`.`Columns` (
+  `columnId` int NOT NULL AUTO_INCREMENT,
+  `columnName` varchar(45) NULL,
+  PRIMARY KEY (`columnId`),
+  FOREIGN KEY (`boardId`) REFERENCES `Boards` (`boardId`)
+);
+
+CREATE TABLE `opm`.`Tasks` (
+	`taskId` int NOT NULL AUTO_INCREMENT,
+	`boardId` int NOT NULL, 
+	`taskName` varchar(255) NULL,
+	`taskInfo` text(65535) NULL,
+	`taskDueDate` datetime DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`taskId`),
+	FOREIGN KEY (`columnId`) REFERENCES `Columns` (`columnId`)
+);

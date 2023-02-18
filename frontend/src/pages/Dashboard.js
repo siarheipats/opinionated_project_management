@@ -32,6 +32,16 @@ const Dashboard = () => {
     const [showSettings, setShowSettings] = React.useState();
     const [showWorkspaces, setShowWorkspaces] = React.useState();
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
+    const [openedWorkspace, setOpenedWorkspace] = React.useState();
+
+    function setSelectedWorkspace(workspace) {
+        setOpenedWorkspace(workspace);
+        goHome();
+    }
+
+    function closeWorkspace() {
+        setOpenedWorkspace();
+    }
 
     function goHome() {
         setShowDashboardMain(true);
@@ -115,17 +125,15 @@ const Dashboard = () => {
                 >
                     <Toolbar />
                     <Typography paragraph>
-                        <h2>Welcome, {user.user.firstName}.</h2>
-                    </Typography>
-                    <Typography paragraph>
                         {
                             showSettings ? <Settings /> : null
                         }
                         {
-                            showWorkspaces ? <Workspaces /> : null
+                            showWorkspaces ? <Workspaces
+                                setSelectedWorkspace={setSelectedWorkspace} /> : null
                         }
                         {
-                            showDashboardMain ? <DashboardMain /> : null
+                            showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} /> : null
                         }
                     </Typography>
                 </Box>

@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CreateWorkspaceModal from './workspace_components/createWorkspaceModal';
 import WorkspacesList from '../components/workspace_components/workspacesList';
 
-const Workspaces = (props) => {
+const Workspaces = ({setSelectedWorkspace}) => {
     const { user } = useAuthContext();
     const [workspaces, setWorkspaces] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -99,6 +99,7 @@ const Workspaces = (props) => {
                 workspacesList={workspaces}
                 deleteWorkspace={deleteWorkspace}
                 updateWorkspaces={updateWorkspaces}
+                setSelectedWorkspace={setSelectedWorkspace}
             />
             <CreateWorkspaceModal
                 userId={user.user.customerId}

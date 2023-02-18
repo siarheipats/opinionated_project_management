@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUpdateEmail } from "../../hooks/useUpdateEmail";
 
 // MUI
 import Avatar from '@mui/material/Avatar';
@@ -16,8 +17,14 @@ const EmailChange = () => {
     const { user } = useAuthContext();
     const [oldEmail, setOldEmail] = useState(user.user.email);
     const [newEmail, setNewEmail] = useState('');
+    const { updateEmail, error, isLoading } = useUpdateEmail();
 
     const theme = createTheme();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await updateEmail(user.user.customerId, newEmail);
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -36,7 +43,7 @@ const EmailChange = () => {
                         Change Email:
                     </Typography>
                     <br />
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required

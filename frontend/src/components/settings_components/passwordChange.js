@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useUpdatePassword } from "../../hooks/useUpdatePassword";
 
 // MUI
 import Avatar from '@mui/material/Avatar';
@@ -13,11 +14,18 @@ import Typography from '@mui/material/Typography';
 import PasswordIcon from '@mui/icons-material/Password';
 
 const PasswordChange = () => {
+    const { user } = useAuthContext();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const { updatePassword, error, isLoading } = useUpdatePassword();
 
     const theme = createTheme();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword);
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -36,7 +44,7 @@ const PasswordChange = () => {
                         Change Password:
                     </Typography>
                     <br />
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
