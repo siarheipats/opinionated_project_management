@@ -17,27 +17,10 @@ const PeopleMain = () => {
                 <AddIcon />
                 Add People
             </Button>
-            <Paper sx={{ margin: 'auto', overflow: 'hidden' }}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                        <SearchIcon color="inherit" sx={{ display: 'block' }} />
-                    </Grid>
-                    <Grid item xs>
-                        <TextField
-                            fullWidth
-                            placeholder="Search by email address"
-                            InputProps={{
-                                disableUnderline: true,
-                                sx: { fontSize: 'default' },
-                            }}
-                            variant="standard"
-                        />
-                    </Grid>
-                </Grid>
-                <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-                    No users for this project yet
-                </Typography>
-            </Paper>
+
+            <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
+                No users for this project yet
+            </Typography>
         </ThemeProvider>
     )
 }
