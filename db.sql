@@ -42,6 +42,7 @@ CREATE TABLE `opm`.`Boards` (
 CREATE TABLE `opm`.`Columns` (
   `columnId` int NOT NULL AUTO_INCREMENT,
   `columnName` varchar(45) NULL,
+  `boardId` INT NOT NULL,
   PRIMARY KEY (`columnId`),
   FOREIGN KEY (`boardId`) REFERENCES `Boards` (`boardId`)
 );
@@ -51,6 +52,7 @@ CREATE TABLE `opm`.`Tasks` (
 	`boardId` int NOT NULL, 
 	`taskName` varchar(255) NULL,
 	`taskInfo` text(65535) NULL,
+  `columnId` int NOT NULL,
 	`taskDueDate` datetime DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`taskId`),
 	FOREIGN KEY (`columnId`) REFERENCES `Columns` (`columnId`)
