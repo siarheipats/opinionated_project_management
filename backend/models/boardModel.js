@@ -28,7 +28,7 @@ const Boards = sequelize.define("Boards", {
         timestamps: false
     });
 
-async function createBoards(boardName, boardDescription, workspaceId) {
+async function createBoard(boardName, boardDescription, workspaceId) {
     if (!boardName || !boardDescription || !workspaceId ) {
         throw Error('All fields must be filled')
     }
@@ -46,12 +46,12 @@ async function createBoards(boardName, boardDescription, workspaceId) {
     return newBoards;
 }
 
-async function readBoards() {
+async function readBoard() {
     const boards = await Boards.findAll();
     return boards;
 }
 
-async function updateBoards(boardId, boardName, boardDescription) {
+async function updateBoard(boardId, boardName, boardDescription) {
     if (!boardId || !boardName || !boardDescription) {
         throw Error("All fields must be filled.")
     }
@@ -66,7 +66,7 @@ async function updateBoards(boardId, boardName, boardDescription) {
     })
 }
 
-async function deleteBoards(boardId, boardName) {
+async function deleteBoard(boardId, boardName) {
     if (!boardId || !boardName) {
         throw Error("All fields must be filled.")
     }
@@ -80,7 +80,7 @@ async function deleteBoards(boardId, boardName) {
     })
 }
 
-exports.createBoards = createBoards;
-exports.readBoards = readBoards;
-exports.updateBoards = updateBoards;
-exports.deleteBoards = deleteBoards;
+exports.createBoard = createBoard;
+exports.readBoard = readBoard;
+exports.updateBoard = updateBoard;
+exports.deleteBoard = deleteBoard;
