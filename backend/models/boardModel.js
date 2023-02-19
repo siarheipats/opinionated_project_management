@@ -12,7 +12,7 @@ const Boards = sequelize.define("Boards", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    boardDescription: {
+    boardDescription: { // confirm this member exists in Boards table?
         type: DataTypes.STRING,
         allowNull: false
     },
