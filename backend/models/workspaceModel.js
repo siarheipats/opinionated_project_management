@@ -18,7 +18,7 @@ const Workspaces = sequelize.define("Workspaces", {
     }
 },
     {
-        timestapms: false
+        timestamps: false
     });
 
 const CustomerWorkspaces = sequelize.define("CustomerWorkspaces", {
@@ -34,7 +34,7 @@ const CustomerWorkspaces = sequelize.define("CustomerWorkspaces", {
     }
 },
     {
-        timestapms: false
+        timestamps: false
     });
 
 async function createWorkspace(workspaceName, customerId) {
