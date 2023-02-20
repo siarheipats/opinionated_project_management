@@ -57,3 +57,22 @@ CREATE TABLE `opm`.`Tasks` (
 	PRIMARY KEY (`taskId`),
 	FOREIGN KEY (`columnId`) REFERENCES `Columns` (`columnId`)
 );
+
+CREATE TABLE `opm`.`SharedWorkspaces` (
+	sharedWorkspaceId int NOT NULL AUTO_INCREMENT,
+    workspaceId int NOT NULL,
+    customerId int NOT NULL,
+    PRIMARY KEY(`sharedWorkspaceId`),
+    FOREIGN KEY (`workspaceId`) REFERENCES `Workspaces` (`workspaceId`),
+    FOREIGN KEY (`customerId`) REFERENCES `Customers` (`customerId`)
+);
+
+CREATE TABLE `opm`.`Invites` (
+	inviteId int NOT NULL AUTO_INCREMENT,
+    workspaceId int NOT NULL,
+    customerId int NOT NULL,
+	isInviteAccepted BIT Default 0,
+    PRIMARY KEY(`inviteId`),
+    FOREIGN KEY (`workspaceId`) REFERENCES `Workspaces` (`workspaceId`),
+    FOREIGN KEY (`customerId`) REFERENCES `Customers` (`customerId`)
+);
