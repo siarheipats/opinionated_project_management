@@ -1,14 +1,14 @@
-const boardModel = require('../models/boardModel');
+const BoardModel = require('../models/boardModel');
 
 // createBoard(): create a board and return board info
 // Arguments: boardid, workspaceID
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
 const createBoard = async (req, res) => {
-  const { boardId, workspaceId, boardName, caregoryName } = req.body;
+  const { boardId, workspaceId, boardName, categoryName } = req.body;
   try {
       const Board = await BoardModel.createBoard(boardId, workspaceId, boardName,
-                                                                    caregoryName);
+                                                categoryName);
       res.status(200).json(Board);
   } catch (error) {
       res.status(400).json({ error: error.message })
@@ -30,14 +30,14 @@ const getBoard = async (req, res) => {
 }
 
 // updateBoard(): Given boardId, update a board's member items.
-// Arguments: BoardId, BoardName, workspaceId, caregoryName
+// Arguments: BoardId, BoardName, workspaceId, categoryName
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
 const updateBoard = async (req, res) => {
-  const { boardId, boardName, workspaceId, caregoryName } = req.body;
+  const { boardId, boardName, workspaceId, categoryName } = req.body;
   try {
       const response = await BoardModel.updateWorkspaceDetails(boardId, boardName,
-                                                          workspaceId, caregoryName);
+                                                          workspaceId, categoryName);
       res.status(200).json({ response });
   } catch (error) {
       res.status(400).json({ error: error.message })
@@ -57,3 +57,5 @@ const deleteBoard = async (req, res) => {
       res.status(400).json({ error: error.message })
   }
 }
+
+module.exports = { createBoard, getBoard, updateBoard, deleteBoard }
