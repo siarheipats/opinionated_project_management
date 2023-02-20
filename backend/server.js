@@ -4,6 +4,7 @@ const bodyparser = require('body-parser');
 const express = require('express');
 const userRoutes = require('./routes/user');
 const workspaceRoutes = require('./routes/workspace')
+const sharedWorkspacesRoutes = require('./routes/sharedWorkspaces')
 const app = express();
 const db = require('./db_connector')
 
@@ -24,6 +25,8 @@ app.use(bodyparser.json());
 app.use('/api/user', userRoutes);
 // Register Workspace Routes
 app.use('/api/workspace', workspaceRoutes)
+// register shared workspaces Routes
+app.use('/api/shared', sharedWorkspacesRoutes)
 
 // Listen
 app.listen(PORT, () => {
