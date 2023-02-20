@@ -56,7 +56,7 @@ const Tasks = sequelize.define("Tasks", {
   }
   
   async function getTask(columnId) {
-      const Task = await Tasks.getTask(taskId);
+      const Task = await Tasks.getTask(columnId);
       return Task;
   }
   
