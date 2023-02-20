@@ -16,11 +16,11 @@ const Tasks = sequelize.define("Tasks", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    boardId: {
+    column: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Boards',
-            key: 'boardId'
+            model: 'Columns',
+            key: 'columnId'
         }
     },
     taskInfo: {
@@ -55,37 +55,39 @@ const Tasks = sequelize.define("Tasks", {
       return Task;
   }
   
-  async function getTask(taskId) {
+  async function getTask(columnId) {
       const Task = await Tasks.getTask(taskId);
       return Task;
   }
   
-  async function updateTask(taskId) {
-      // if (!columnId || !columnName) {
-      //     throw Error("All fields must be filled.")
-      // }
+  async function updateTask(taskId, columnId, taskName, taskInfo, taskDueDate) {
+       if (!taskId || !columnId || !taskName ||
+           !taskInfo || !taskDueDate) {
+           throw Error("All fields must be filled.")
+       }
   
-      // await Culumns.update({ 
-      //     columnName: columnName,
-      // }, {
-      //     where: {
-      //         columnId: columnId
-      //     }
-      // })
+      await Tasks.updateTask({ 
+          columnId: columnId, 
+          taskName: taskName, 
+          taskInfo: taskInfo, 
+          taskDueDate: taskDueDate
+      }, {
+          where: {
+              taskId: taskId
+          }
+      })
   }
   
   async function deleteTask(taskId) {
-      // if (!columnId || !columnName) {
-      //     throw Error("All fields must be filled.")
-      // }
+      if (!taskId ) {
+          throw Error("All fields must be filled.")
+      }
   
-      // // associate tasks with boards and delete tasks with boards?
-  
-      // await Culumns.destroy({
-      //     where: {
-      //         columnId: columnId
-      //     }
-      // })
+      await Tasks.updateDelete({ 
+        where: {
+            taskId: taskId
+         }
+       })      
   }
 
 

@@ -34,9 +34,9 @@ const getTask = async (req, res) => {
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
 const updateTask = async (req, res) => {
-  const { taskId, boardId, taskName, taskInfo, taskDueDate } = req.body;
+  const { taskId, columnId, taskName, taskInfo, taskDueDate } = req.body;
   try {
-      const response = await TaskModel.updateWorkspaceDetails(taskId, boardId, 
+      const response = await TaskModel.updateWorkspaceDetails(taskId, columnId, 
                                               taskName, taskInfo, taskDueDate);
       res.status(200).json({ response });
   } catch (error) {
