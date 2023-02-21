@@ -60,7 +60,7 @@ async function getCustomersWorkspaces(customerId) {
         throw Error('Something went wrong. customerId is not found!');
     }
     const query = `SELECT CustomerWorkspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated 
-    FROM opm.CustomerWorkspaces
+    FROM CustomerWorkspaces
     JOIN Workspaces ON Workspaces.workspaceId = CustomerWorkspaces.workspaceId
     WHERE CustomerWorkspaces.customerId = ${customerId};`
     //console.log(query)
