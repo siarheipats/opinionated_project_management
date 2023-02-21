@@ -64,4 +64,15 @@ const updateEmail = async (req, res) => {
     }
 }
 
-module.exports = { signupUser, loginUser, updateName, updatePassword, updateEmail }
+// earch by email 
+const searchByEmail = async (req, res) => {
+    const {email} = req.body;
+    try {
+        const customers = await userModel.searchCustomerByEmail(email);
+        res.status(200).json(customers);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+    }
+}
+
+module.exports = { signupUser, loginUser, updateName, updatePassword, updateEmail, searchByEmail }
