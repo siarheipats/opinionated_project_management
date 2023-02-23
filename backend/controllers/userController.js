@@ -64,14 +64,14 @@ const updateEmail = async (req, res) => {
     }
 }
 
-// earch by email 
+// search by email 
 const searchByEmail = async (req, res) => {
-    const {email} = req.body;
+    const email = req.query['email'];
     try {
         const customers = await userModel.searchCustomerByEmail(email);
         res.status(200).json(customers);
     } catch (error) {
-        res.status(400).json({error: error.message});
+        res.status(400).json({ error: error.message });
     }
 }
 

@@ -16,7 +16,6 @@ const Workspace = ({ workspaceDetails, deleteWorkspace, editWorkspace, setWorksp
         <ListItem
             secondaryAction={
                 <div>
-
                     <IconButton edge="end" aria-label="open" style={{ margin: 5 }}>
                         <OpenInNewIcon onClick={() => setSelectedWorkspace(workspaceDetails)} />
                     </IconButton>
