@@ -1,7 +1,8 @@
 const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
+const Boards = require("./boardModel");
 
-const Culumns = sequelize.define("Culumns", {
+const Columns = sequelize.define("Columns", {
     culumnId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -15,7 +16,7 @@ const Culumns = sequelize.define("Culumns", {
     boardId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Boards',
+            model: Boards,
             key: 'boardId'
         }
     }
@@ -24,34 +25,32 @@ const Culumns = sequelize.define("Culumns", {
         timestamps: false
     });
 
-async function createCulumns(columnId, columnName) {
-    if (!columnId || !columnName) {
+async function createColumns(columnName, boardId) {
+    if (!columnName || !boardId) {
         throw Error('All fields must be filled')
     }
-    const board = await Boards.findOne({ where: { boardId: boardId } });
-    if (!board) {
-      throw Error("Invalid board ID");
-    }
-    const newCulumns = await Culumns.create({
+    const newColumn = await Columns.create({
         columnId: null,
         columnName: columnName,
         boardId: boardId
     })
 
-    return newCulumns;
+    return newColumn;
 }
 
-async function readCulumns() {
-    const Culumns = await Culumns.findAll();
-    return Culumns;
+async function readColumns() {
+    const Column = await Columns.findAll({
+        where: {boardId : boardId}
+    });
+    return Column;
 }
 
-async function updateCulumns(columnId, columnName) {
+async function updateColumns(columnId, columnName) {
     if (!columnId || !columnName) {
         throw Error("All fields must be filled.")
     }
 
-    await Culumns.update({ 
+    await Columns.update({ 
         columnName: columnName,
     }, {
         where: {
@@ -60,21 +59,20 @@ async function updateCulumns(columnId, columnName) {
     })
 }
 
-async function deleteCulumns(columnId, columnName) {
-    if (!columnId || !columnName) {
+async function deleteColumns(columnId) {
+    if (!columnId) {
         throw Error("All fields must be filled.")
     }
 
-    // associate tasks with boards and delete tasks with boards?
-
-    await Culumns.destroy({
+    await Columns.destroy({
         where: {
             columnId: columnId
         }
     })
 }
 
-exports.createCulumns = createCulumns;
-exports.readCulumns = readCulumns;
-exports.updateCulumns = updateCulumns;
-exports.deleteCulumns = deleteCulumns;
+exports.createColumns = createColumns;
+exports.readColumns = readColumns;
+exports.updateColumns = updateColumns;
+exports.deleteColumns = deleteColumns;
+exports.Columns = Columns;
