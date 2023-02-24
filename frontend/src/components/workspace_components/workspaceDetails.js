@@ -54,7 +54,7 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                 <Grid item xs>
                     <Grid container direction="row-reverse">
                         <Grid item>
-                            <CloseIcon onClick={() => closeWorkspace()}/>
+                            <CloseIcon onClick={() => closeWorkspace()} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -73,10 +73,11 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                     <Tab label="People" {...a11yProps(1)} />
                 </Tabs>
                 <TabPanel value={tabValue} index={0}>
-                    <BoardsMain/>
+                    <BoardsMain />
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                    <PeopleMain/>
+                    <PeopleMain
+                        workspaceId={workspace.workspaceId} />
                 </TabPanel>
             </Box>
 

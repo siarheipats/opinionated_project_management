@@ -11,7 +11,7 @@ const createInvite = async (req, res) => {
 }
 
 const getCustomerInvites = async (req, res) => {
-    const {customerId} = req.body;
+    const { customerId } = req.body;
     try {
         const invites = await sharedWorkspaceModel.getCustomerInvites(customerId);
         res.status(200).json(invites);
@@ -21,8 +21,8 @@ const getCustomerInvites = async (req, res) => {
 }
 
 const deleteInvite = async (req, res) => {
-    const {inviteId} = req.body;
-    try{
+    const { inviteId } = req.body;
+    try {
         const result = await sharedWorkspaceModel.deleteInvite(inviteId);
         res.status(200).json(result);
     } catch (error) {
@@ -31,8 +31,8 @@ const deleteInvite = async (req, res) => {
 }
 
 const acceptInvite = async (req, res) => {
-    const {inviteId} = req.body;
-    try{
+    const { inviteId } = req.body;
+    try {
         const result = await sharedWorkspaceModel.acceptInvite(inviteId);
         res.status(200).json(result);
     } catch (error) {
@@ -41,7 +41,7 @@ const acceptInvite = async (req, res) => {
 }
 
 const getCustomerSharedWorkspaces = async (req, res) => {
-    const {customerId} = req.body;
+    const { customerId } = req.body;
     try {
         const result = await sharedWorkspaceModel.getCustomerSharedWorkspaces(customerId);
         res.status(200).json(result);
@@ -50,4 +50,32 @@ const getCustomerSharedWorkspaces = async (req, res) => {
     }
 }
 
-module.exports = {createInvite, getCustomerInvites, deleteInvite, acceptInvite, getCustomerSharedWorkspaces}
+const getPendingInvites = async (req, res) => {
+    const workspaceId = req.query['workspaceId'];
+    try {
+        const sharedWith = await sharedWorkspaceModel.getPendingInvitesForWorkspace(workspaceId);
+        res.status(200).json(sharedWith);
+    } catch {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+const getAcceptedInvites = async (req, res) => {
+    const workspaceId = req.query['workspaceId'];
+    try {
+        const sharedWith = await sharedWorkspaceModel.getAcceptedInvitesForWorksapce(workspaceId);
+        res.status(200).json(sharedWith);
+    } catch {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+module.exports = {
+    createInvite,
+    getCustomerInvites,
+    deleteInvite,
+    acceptInvite,
+    getCustomerSharedWorkspaces,
+    getPendingInvites,
+    getAcceptedInvites
+}

@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const {createInvite, 
-    getCustomerInvites, 
-    deleteInvite, 
-    acceptInvite, 
-    getCustomerSharedWorkspaces} = require('../controllers/sharedWorkspacesController');
+const { createInvite,
+    getCustomerInvites,
+    deleteInvite,
+    acceptInvite,
+    getCustomerSharedWorkspaces,
+    getPendingInvites,
+    getAcceptedInvites } = require('../controllers/sharedWorkspacesController');
 
 // create invite
 router.post('/createinvite', createInvite);
@@ -20,5 +22,11 @@ router.post('/acceptinvite', acceptInvite);
 
 // get shared workspaces
 router.get('/getsharedworkspaces', getCustomerSharedWorkspaces);
+
+// get pending invites
+router.get('/pendinginvites', getPendingInvites);
+
+// get accepted invites
+router.get('/acceptedinvites', getAcceptedInvites);
 
 module.exports = router;

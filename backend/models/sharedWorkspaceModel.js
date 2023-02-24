@@ -42,6 +42,18 @@ const Invites = sequelize.define("Invites", {
     }
 );
 
+const InviteDisplay = sequelize.define("InviteDisplay", {
+    firstName: {
+        type: DataTypes.STRING
+    },
+    lastName: {
+        type: DataTypes.STRING
+    },
+    email: {
+        type: DataTypes.STRING
+    }
+})
+
 async function createInvite(customerId, workspaceId) {
     if (!workspaceId || !customerId) {
         throw Error('All fields must be filled')
@@ -101,8 +113,34 @@ async function getCustomerSharedWorkspaces(customerId) {
     return sharedWorkspaces;
 }
 
+async function getPendingInvitesForWorkspace(workspaceId) {
+    if (!workspaceId) {
+        throw Error('All fields must be filled')
+    }
+    const query = `
+    SELECT Customers.firstName, Customers.lastName, Customers.email FROM Invites 
+    JOIN Customers ON Customers.customerId = Invites.customerId
+    WHERE workspaceId = ${workspaceId} AND isInviteAccepted = 0;`
+    const sharedWith = await sequelize.query(query, { model: InviteDisplay, mapToModel: true });
+    return sharedWith;
+}
+
+async function getAcceptedInvitesForWorksapce(workspaceId) {
+    if (!workspaceId) {
+        throw Error('All fields must be filled')
+    }
+    const query = `
+    SELECT Customers.firstName, Customers.lastName, Customers.email FROM Invites 
+    JOIN Customers ON Customers.customerId = Invites.customerId
+    WHERE workspaceId = ${workspaceId} AND isInviteAccepted = 1;`
+    const sharedWith = await sequelize.query(query, { model: InviteDisplay, mapToModel: true });
+    return sharedWith;
+}
+
 exports.createInvite = createInvite;
 exports.getCustomerInvites = getCustomerInvites;
 exports.deleteInvite = deleteInvite;
 exports.acceptInvite = acceptInvite;
 exports.getCustomerSharedWorkspaces = getCustomerSharedWorkspaces;
+exports.getPendingInvitesForWorkspace = getPendingInvitesForWorkspace;
+exports.getAcceptedInvitesForWorksapce = getAcceptedInvitesForWorksapce;
