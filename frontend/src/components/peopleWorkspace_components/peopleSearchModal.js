@@ -28,7 +28,7 @@ const style = {
     p: 4,
 };
 
-const PeopleSearchModal = ({ showModal, handleCloseModal }) => {
+const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendingInvites }) => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
@@ -60,7 +60,9 @@ const PeopleSearchModal = ({ showModal, handleCloseModal }) => {
         const json = await response.json();
 
         if (response.ok) {
-            setSearchResults(json);
+            //const newResult = json.filter(m => acceptedInvites.customerId === json.customerId);
+            //const finalResult = newResult.filter(m => pendingInvites.customerId !== m.customerId);
+            setSearchResults(newResult);
         }
     }
 
