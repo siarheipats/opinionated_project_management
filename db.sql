@@ -1,4 +1,4 @@
-CREATE TABLE `opm`.`Customers` (
+CREATE TABLE IF NOT EXISTS `opm`.`Customers` (
   `customerId` INT AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `phoneNumber` VARCHAR(45) NOT NULL,
@@ -8,14 +8,14 @@ CREATE TABLE `opm`.`Customers` (
   PRIMARY KEY (`customerId`)
 );
 
-CREATE TABLE `opm`.`Workspaces` (
+CREATE TABLE IF NOT EXISTS `opm`.`Workspaces` (
   `workspaceId` INT AUTO_INCREMENT,
   `workspaceName` VARCHAR(45) NULL,
   `dateCreated` VARCHAR(45) NULL,
   PRIMARY KEY (`workspaceId`)
 );
 
-CREATE TABLE CustomerWorkspaces (
+CREATE TABLE IF NOT EXISTS CustomerWorkspaces (
 	customerWorkspacesId INT AUTO_INCREMENT,
     customerId INT NOT NULL,
     workspaceId INT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE CustomerWorkspaces (
         ON UPDATE CASCADE
 );
 
-CREATE TABLE `opm`.`Boards` (
+CREATE TABLE IF NOT EXISTS `opm`.`Boards` (
 	`boardId` int NOT NULL AUTO_INCREMENT,
 	`workspaceId` int NOT NULL, 
 	`boardName` varchar(255) NULL,
@@ -39,20 +39,20 @@ CREATE TABLE `opm`.`Boards` (
 	FOREIGN KEY (`workspaceId`) REFERENCES `Workspaces` (`workspaceId`)
 );
 
-CREATE TABLE `opm`.`Columns` (
+CREATE TABLE IF NOT EXISTS `opm`.`Columns` (
   `columnId` int NOT NULL AUTO_INCREMENT,
   `columnName` varchar(45) NULL,
-  `boardId` INT NOT NULL,
+  `boardId` int NOT NULL,
   PRIMARY KEY (`columnId`),
   FOREIGN KEY (`boardId`) REFERENCES `Boards` (`boardId`)
 );
 
-CREATE TABLE `opm`.`Tasks` (
+CREATE TABLE IF NOT EXISTS `opm`.`Tasks` (
 	`taskId` int NOT NULL AUTO_INCREMENT,
 	`boardId` int NOT NULL, 
+    `columnId` int NOT NULL,
 	`taskName` varchar(255) NULL,
 	`taskInfo` text(65535) NULL,
-  `columnId` int NOT NULL,
 	`taskDueDate` datetime DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`taskId`),
 	FOREIGN KEY (`columnId`) REFERENCES `Columns` (`columnId`)
