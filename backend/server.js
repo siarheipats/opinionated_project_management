@@ -4,6 +4,8 @@ const bodyparser = require('body-parser');
 const express = require('express');
 const userRoutes = require('./routes/user');
 const workspaceRoutes = require('./routes/workspace')
+const boardRoutes = require('./routes/board')
+const columnRoutes = require('./routes/column')
 const app = express();
 const db = require('./db_connector')
 
@@ -24,7 +26,10 @@ app.use(bodyparser.json());
 app.use('/api/user', userRoutes);
 // Register Workspace Routes
 app.use('/api/workspace', workspaceRoutes)
-
+// Register Board Routes
+app.use('/api/board', boardRoutes)
+// Register Column Routes
+app.use('/api/column', columnRoutes)
 // Listen
 app.listen(PORT, () => {
     console.log(`API is listening on ${PORT}`);
