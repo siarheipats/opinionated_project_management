@@ -3,10 +3,10 @@ const router = express.Router();
 const { createBoard, getBoard, updateBoard, deleteBoard } = require('../controllers/boardController');
 
 // create board
-router.post('/', createBoard);
+router.post('/create', createBoard);
 
 // get board details
-router.get('/:boardId', getBoard);
+router.get('/boards/:_workspaceId', getBoard);
 
 // update board details
 router.put('/:boardId', updateBoard);

@@ -19,7 +19,7 @@ const style = {
     p: 4,
 };
 
-const CreateBoardModal = ({ workspaceId, showModal, handleCloseModalFunction }) => {
+const CreateBoardModal = ({ workspaceId, showModal, handleCloseModalFunction, addBoards }) => {
     const [boardName, setBoardName] = useState("");
 
     const handleClose = () => {
@@ -38,16 +38,17 @@ const CreateBoardModal = ({ workspaceId, showModal, handleCloseModalFunction }) 
         const json = await response.json();
 
         if (response.ok) {
-            addWorkspaces(json);
+            addBoards(json);
             handleClose();
         }
     }
 
     const handleCreateWorkspace = async (e) => {
         e.preventDefault();
-        await newWorkspace(workspaceName, customerId);
+        await newBoard(boardName, workspaceId);
         handleClose();
     }
+
 
     return (
         <Modal
@@ -57,7 +58,7 @@ const CreateBoardModal = ({ workspaceId, showModal, handleCloseModalFunction }) 
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Create New Workspace:
+                    Create New Board:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateWorkspace}>
@@ -67,8 +68,8 @@ const CreateBoardModal = ({ workspaceId, showModal, handleCloseModalFunction }) 
                             fullWidth
                             label="Name"
                             autoFocus
-                            onChange={(e) => setWorkspaceName(e.target.value)}
-                            value={workspaceName}
+                            onChange={(e) => setBoardName(e.target.value)}
+                            value={boardName}
                         />
                         <Button
                             type="submit"

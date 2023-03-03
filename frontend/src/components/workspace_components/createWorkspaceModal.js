@@ -40,7 +40,6 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
 
         if (response.ok) {
             addWorkspaces(json);
-            handleClose();
         }
     }
 
