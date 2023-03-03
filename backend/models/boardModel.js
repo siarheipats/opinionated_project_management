@@ -43,7 +43,7 @@ async function createBoard(boardName, boardDescription, workspaceId) {
     return newBoard;
 }
 
-async function readBoard(workspaceId) {
+async function getBoard(workspaceId) {
     const board = await Boards.findAll({
         where: { workspaceId: workspaceId }
     });
@@ -78,7 +78,7 @@ async function deleteBoard(boardId) {
 }
 
 exports.createBoard = createBoard;
-exports.readBoard = readBoard;
+exports.getBoard = getBoard;
 exports.updateBoard = updateBoard;
 exports.deleteBoard = deleteBoard;
 exports.Boards = Boards;
