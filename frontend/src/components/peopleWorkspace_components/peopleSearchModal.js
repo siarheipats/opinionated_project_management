@@ -62,7 +62,7 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
         if (response.ok) {
             //const newResult = json.filter(m => acceptedInvites.customerId === json.customerId);
             //const finalResult = newResult.filter(m => pendingInvites.customerId !== m.customerId);
-            setSearchResults(newResult);
+            setSearchResults(searchResults);
         }
     }
 
