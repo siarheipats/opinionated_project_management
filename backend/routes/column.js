@@ -3,10 +3,10 @@ const router = express.Router();
 const { createColumn, getColumns, updateColumn, deleteColumn } = require('../controllers/columnController');
 
 // create column
-router.post('/', createColumn);
+router.post('/create', createColumn);
 
 // get columns for a board
-router.get('/:boardId', getColumns);
+router.get('/:columnId', getColumns);
 
 // update column details
 router.put('/:columnId', updateColumn);
