@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 // MUI
 import Avatar from '@mui/material/Avatar';
@@ -28,9 +29,11 @@ const style = {
     p: 4,
 };
 
-const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendingInvites }) => {
+const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendingInvites, refreshInvites, workspaceId }) => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+
+    const { user } = useAuthContext();
 
     const handleClose = () => {
         showModal = false;
@@ -47,8 +50,17 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
         fetchSearchResults();
     }
 
-    function handleInvite() {
-        handleClose();
+    const newInvite = async (customerId) => {
+        const response = await fetch('/api/shared/createinvite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ customerId, workspaceId })
+        });
+
+        if (response.ok) {
+            refreshInvites();
+            handleCloseModal();
+        }
     }
 
     const fetchSearchResults = async () => {
@@ -60,9 +72,22 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
         const json = await response.json();
 
         if (response.ok) {
-            //const newResult = json.filter(m => acceptedInvites.customerId === json.customerId);
-            //const finalResult = newResult.filter(m => pendingInvites.customerId !== m.customerId);
-            setSearchResults(searchResults);
+            for (var i = json.length - 1; i >= 0; i--) {
+                for (var j = 0; j < pendingInvites.length; j++) {
+                    if (json[i] && (json[i].customerId == pendingInvites[j].customerId)) {
+                        json.splice(i, 1);
+                    }
+                }
+                for (var k = 0; k < acceptedInvites.length; k++) {
+                    if (json[i] && (json[i].customerId == acceptedInvites[k].customerId)) {
+                        json.splice(i, 1);
+                    }
+                }
+                if (json[i] && (json[i].customerId == user.user.customerId)) {
+                    json.splice(i, 1);
+                }
+            }
+            setSearchResults(json);
         }
     }
 
@@ -76,7 +101,7 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     <Grid container>
                         <Grid item>
-                            Search People:
+                            Search People: Results: {searchResults.length}
                         </Grid>
                         <Grid item xs>
                             <Grid container direction="row-reverse">
@@ -117,7 +142,7 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
                             <ListItem
                                 secondaryAction={
                                     <div>
-                                        <Button variant="outlined" onClick={handleInvite}>Invite</Button>
+                                        <Button variant="outlined" onClick={() => newInvite(customer.customerId)}>Invite</Button>
                                     </div>
                                 }>
                                 <ListItemAvatar>

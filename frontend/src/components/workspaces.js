@@ -40,7 +40,7 @@ const Workspaces = ({setSelectedWorkspace}) => {
         }
         fetchWorkspaces();
     }, []);
-
+    
     const updateWorkspaces = () => {
         const fetchWorkspaces = async () => {
             const response = await fetch(`/api/workspace/workspaces/${user.user.customerId}`, {

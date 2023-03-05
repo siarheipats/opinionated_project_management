@@ -42,6 +42,33 @@ const PeopleMain = ({ workspaceId }) => {
         fetchAcceptedInvites();
     }, []);
 
+    const refreshInvites = () => {
+        const fetchPendingInvites = async () => {
+            const response = await fetch(`/api/shared/pendinginvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setPendingInvites(json);
+            }
+        }
+
+        const fetchAcceptedInvites = async () => {
+            const response = await fetch(`/api/shared/acceptedinvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setAcceptedInvites(json);
+            }
+        }
+
+        fetchPendingInvites();
+        fetchAcceptedInvites();
+    }
+
     const handleOpenModal = () => setShowAddPeopleModal(true);
     const handleCloseModal = () => setShowAddPeopleModal(false);
 
@@ -56,7 +83,12 @@ const PeopleMain = ({ workspaceId }) => {
                 acceptedInvites={acceptedInvites} />
             <PeopleSearchModal
                 showModal={showAddPeopleModal}
-                handleCloseModal={handleCloseModal} />
+                handleCloseModal={handleCloseModal}
+                acceptedInvites={acceptedInvites}
+                pendingInvites={pendingInvites}
+                refreshInvites={refreshInvites}
+                workspaceId={workspaceId}
+            />
         </ThemeProvider>
     )
 }
