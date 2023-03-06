@@ -6,7 +6,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import BoardsMain from '../boardsMain';
 import PeopleMain from '../peopleMain';

@@ -57,6 +57,18 @@ const InviteDisplay = sequelize.define("InviteDisplay", {
     }
 })
 
+const SharedWorkspacesModel = sequelize.define('SharedWorkspaces', {
+    workspaceId: {
+        type: DataTypes.INTEGER
+    },
+    workspaceName: {
+        type: DataTypes.STRING
+    },
+    dateCreated: {
+        type: DataTypes.STRING
+    }
+})
+
 async function createInvite(customerId, workspaceId) {
     if (!workspaceId || !customerId) {
         throw Error('All fields must be filled')
@@ -112,7 +124,12 @@ async function getCustomerSharedWorkspaces(customerId) {
     if (!customerId) {
         throw Error('All fields must be filled')
     }
-    const sharedWorkspaces = await SharedWorkspaces.findAll({ where: { customerId: customerId } });
+    const query = `
+    SELECT Workspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated FROM opm2.SharedWorkspaces
+    JOIN Workspaces ON Workspaces.workspaceId = SharedWorkspaces.workspaceId
+    WHERE SharedWorkspaces.customerId = ${customerId};
+    `
+    const sharedWorkspaces = await sequelize.query(query, { model: SharedWorkspaces, mapToModel: true });
     return sharedWorkspaces;
 }
 

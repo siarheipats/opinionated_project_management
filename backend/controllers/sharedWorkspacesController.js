@@ -41,7 +41,7 @@ const acceptInvite = async (req, res) => {
 }
 
 const getCustomerSharedWorkspaces = async (req, res) => {
-    const { customerId } = req.body;
+    const customerId  = req.query['customerId'];
     try {
         const result = await sharedWorkspaceModel.getCustomerSharedWorkspaces(customerId);
         res.status(200).json(result);

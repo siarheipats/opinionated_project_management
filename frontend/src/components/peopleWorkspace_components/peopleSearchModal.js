@@ -74,16 +74,16 @@ const PeopleSearchModal = ({ showModal, handleCloseModal, acceptedInvites, pendi
         if (response.ok) {
             for (var i = json.length - 1; i >= 0; i--) {
                 for (var j = 0; j < pendingInvites.length; j++) {
-                    if (json[i] && (json[i].customerId == pendingInvites[j].customerId)) {
+                    if (json[i] && (json[i].customerId === pendingInvites[j].customerId)) {
                         json.splice(i, 1);
                     }
                 }
                 for (var k = 0; k < acceptedInvites.length; k++) {
-                    if (json[i] && (json[i].customerId == acceptedInvites[k].customerId)) {
+                    if (json[i] && (json[i].customerId === acceptedInvites[k].customerId)) {
                         json.splice(i, 1);
                     }
                 }
-                if (json[i] && (json[i].customerId == user.user.customerId)) {
+                if (json[i] && (json[i].customerId === user.user.customerId)) {
                     json.splice(i, 1);
                 }
             }
