@@ -7,13 +7,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText'
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
 }));
 
 const BoardsMain = ({ workspaceId }) => {
-    const [boards, setboards] = useState([]);
+    const [boards, setBoards] = useState([]);
     const [showModal, setShowModal] = useState(false);
 
 
@@ -25,18 +26,44 @@ const BoardsMain = ({ workspaceId }) => {
             })
 
             const json = await response.json();
+            //console.log(json);
             if (response.ok) {
-                setboards(json);
+                setBoards(json);
             }
         }
         fetchBoards();
     }, []);
 
+    const updateBoards = () => {
+        const fetchBoards = async () => {
+            const response = await fetch(`/api/board/boards/${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
 
+            const json = await response.json();
+            if (response.ok) {
+                setBoards(json);
+            }
+        }
+        fetchBoards();
+    }
     const addBoards = (board) => {
         boards.push(board);
-        setboards(boards);
+        setBoards(boards);
         handleCloseModal();
+    }
+
+    const deleteBoards = async (boardId) => {
+        const response = await fetch('/api/board/delete', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ boardId })
+        });
+        if (response.ok) {
+            const newBoards = boards.filter(m => m.boardId !== boardId)
+            setBoards(newBoards);
+        }
     }
 
     const theme = createTheme();
@@ -55,19 +82,25 @@ const BoardsMain = ({ workspaceId }) => {
             </Button>
             Number of board = {boards.length}
             <Demo>
-                {
-                    boards.map((board, index) => {
-                        <List>
+                {boards.map((board, index) => {
+                    return (
+                        <List key={index}>
                             <ListItem>
                                 <ListItemText
                                     primary={board.boardName}
-                                    secondary={board.dateCreated}
                                 />
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={() => deleteBoards(board.boardId)}
+                                >
+                                    Delete
+                                </Button>
                             </ListItem>
                         </List>
-
-                    })
-                }
+                    );
+                })}
             </Demo>
             <CreateBoardModal
                 workspaceId={workspaceId}
