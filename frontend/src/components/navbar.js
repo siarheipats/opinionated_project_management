@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
-const Navbar = (props) => {
+
+const Navbar = ({ notifications }) => {
     const { logout } = useLogout();
     const { user } = useAuthContext();
 
@@ -32,9 +35,14 @@ const Navbar = (props) => {
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {user && (
-                            <Button sx={{ color: '#fff' }} onClick={handleLogout}>
-                                Log Out
-                            </Button>
+                            <div>
+                                <Badge badgeContent={notifications.length} color="primary" sx={{ mr: 3 }}>
+                                    <NotificationsOutlinedIcon color="white" />
+                                </Badge>
+                                <Button sx={{ color: '#fff' }} onClick={handleLogout}>
+                                    Log Out
+                                </Button>
+                            </div>
                         )}
                         {!user && (
                             <div>

@@ -125,7 +125,7 @@ async function getCustomerSharedWorkspaces(customerId) {
         throw Error('All fields must be filled')
     }
     const query = `
-    SELECT Workspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated FROM opm2.SharedWorkspaces
+    SELECT Workspaces.workspaceId, Workspaces.workspaceName, Workspaces.dateCreated FROM SharedWorkspaces
     JOIN Workspaces ON Workspaces.workspaceId = SharedWorkspaces.workspaceId
     WHERE SharedWorkspaces.customerId = ${customerId};
     `

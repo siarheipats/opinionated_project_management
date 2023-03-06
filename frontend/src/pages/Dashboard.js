@@ -1,4 +1,8 @@
 import * as React from 'react';
+
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useEffect, useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,12 +29,14 @@ const drawerWidth = 240;
 
 
 
-const Dashboard = () => {
+const Dashboard = ({ notifications }) => {
     const [showSettings, setShowSettings] = React.useState();
     const [showWorkspaces, setShowWorkspaces] = React.useState();
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
     const [openedWorkspace, setOpenedWorkspace] = React.useState();
-
+    const { user } = useAuthContext();
+    
+    
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
         goHome();
@@ -108,7 +114,7 @@ const Dashboard = () => {
                                 <ListItemIcon>
                                     <CircleNotificationsOutlinedIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={'Notifications'} />
+                                <ListItemText primary={`Notifications (${notifications.length})`} />
                             </ListItemButton>
                         </ListItem>
                     </List>
