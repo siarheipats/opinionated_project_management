@@ -95,3 +95,4 @@ exports.createTask = createTask;
 exports.getTask = getTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
+exports.Tasks = Tasks;
