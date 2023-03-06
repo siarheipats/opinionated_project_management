@@ -19,7 +19,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
-
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import DashboardMain from "../components/dashmain";
 import Settings from "../components/settings";
 import Workspaces from "../components/workspaces";
@@ -35,8 +35,7 @@ const Dashboard = ({ notifications }) => {
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
     const [openedWorkspace, setOpenedWorkspace] = React.useState();
     const { user } = useAuthContext();
-    
-    
+
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
         goHome();

@@ -1,10 +1,15 @@
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useEffect, useState } from 'react';
-
+import React from "react";
 // pages
 import Dashboard from './Dashboard'
 import LandingPage from './LandingPage'
 import NavBar from '../components/navbar';
+
+//MUI
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+
 
 const Home = () => {
     const [notifications, setNotifications] = useState([]);
@@ -29,7 +34,9 @@ const Home = () => {
         <div>
             <NavBar notifications={notifications} />
             {user && (
-                <Dashboard notifications={notifications} />
+                <div>
+                    <Dashboard notifications={notifications}/>
+                </div>
             )}
             {!user && (
                 <LandingPage />
