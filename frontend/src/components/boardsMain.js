@@ -88,6 +88,7 @@ const BoardsMain = ({ workspaceId }) => {
                             <ListItem>
                                 <ListItemText
                                     primary={board.boardName}
+                                    secondary={board.dateCreated}
                                 />
                                 <Button
                                     variant="contained"
