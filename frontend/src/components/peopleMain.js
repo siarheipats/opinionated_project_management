@@ -1,26 +1,94 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const PeopleMain = () => {
+/// Components
+import PeopleSearchModal from "../components/peopleWorkspace_components/peopleSearchModal";
+import PendingAndAcceptedInvites from "../components/peopleWorkspace_components/peopleDisplayInvitesAcceptedInvitesCollapsable"
+
+const PeopleMain = ({ workspaceId }) => {
+
+    const [showAddPeopleModal, setShowAddPeopleModal] = useState(false);
+    const [pendingInvites, setPendingInvites] = useState([]);
+    const [acceptedInvites, setAcceptedInvites] = useState([]);
     const theme = createTheme();
+
+    useEffect(() => {
+        const fetchPendingInvites = async () => {
+            const response = await fetch(`/api/shared/pendinginvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setPendingInvites(json);
+            }
+        }
+
+        const fetchAcceptedInvites = async () => {
+            const response = await fetch(`/api/shared/acceptedinvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setAcceptedInvites(json);
+            }
+        }
+
+        fetchPendingInvites();
+        fetchAcceptedInvites();
+    }, []);
+
+    const refreshInvites = () => {
+        const fetchPendingInvites = async () => {
+            const response = await fetch(`/api/shared/pendinginvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setPendingInvites(json);
+            }
+        }
+
+        const fetchAcceptedInvites = async () => {
+            const response = await fetch(`/api/shared/acceptedinvites/?workspaceId=${workspaceId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const json = await response.json();
+            if (response.ok) {
+                setAcceptedInvites(json);
+            }
+        }
+
+        fetchPendingInvites();
+        fetchAcceptedInvites();
+    }
+
+    const handleOpenModal = () => setShowAddPeopleModal(true);
+    const handleCloseModal = () => setShowAddPeopleModal(false);
+
     return (
         <ThemeProvider theme={theme}>
-            <Button>
+            <Button onClick={handleOpenModal}>
                 <AddIcon />
                 Add People
             </Button>
-
-            <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-                No users for this project yet
-            </Typography>
+            <PendingAndAcceptedInvites
+                pendingInvites={pendingInvites}
+                acceptedInvites={acceptedInvites} />
+            <PeopleSearchModal
+                showModal={showAddPeopleModal}
+                handleCloseModal={handleCloseModal}
+                acceptedInvites={acceptedInvites}
+                pendingInvites={pendingInvites}
+                refreshInvites={refreshInvites}
+                workspaceId={workspaceId}
+            />
         </ThemeProvider>
     )
 }

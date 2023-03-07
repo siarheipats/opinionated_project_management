@@ -34,9 +34,6 @@ const WorkspacesList = ({ workspacesList, deleteWorkspace, updateWorkspaces, set
             <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
-                        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                            Your Workspaces:
-                        </Typography>
                         <Demo>
                             <List dense={false}>
                                 {workspacesList.map((workspace, index) =>

@@ -156,9 +156,20 @@ async function updateEmail(customerId, email) {
     return user;
 }
 
+async function searchCustomerByEmail(email) {
+    if (!email) {
+        throw Error("All fields must be filled.")
+    }
+    // remove 2
+    const query = `SELECT * FROM Customers WHERE email LIKE "%${email}%";`
+    const customers = await sequelize.query(query, { model: Customers, mapToModel: true });
+    return customers;
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.updateName = updateName;
 exports.updatePassword = updatePassword;
 exports.updateEmail = updateEmail;
+exports.searchCustomerByEmail = searchCustomerByEmail;
 

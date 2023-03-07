@@ -6,7 +6,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import BoardsMain from '../boardsMain';
 import PeopleMain from '../peopleMain';
@@ -54,7 +53,7 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                 <Grid item xs>
                     <Grid container direction="row-reverse">
                         <Grid item>
-                            <CloseIcon onClick={() => closeWorkspace()} />
+                            <CloseIcon onClick={() => closeWorkspace()}  />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -77,7 +76,7 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                         workspaceId={workspace.workspaceId} />
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
-                    <PeopleMain />
+                    <PeopleMain/>
                 </TabPanel>
             </Box>
 

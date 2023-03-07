@@ -15,10 +15,12 @@ const sequelize = new Sequelize(
     {
         host: HOST,
         dialect: 'mysql',
+        logging: false,
         define: {
             timestamps: false
         }
     }
+
 )
 
 module.exports.sequelize = sequelize;

@@ -6,7 +6,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText'
+import ListItemText from '@mui/material/ListItemText';
 import EditIcon from '@mui/icons-material/Edit';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
@@ -16,7 +16,6 @@ const Workspace = ({ workspaceDetails, deleteWorkspace, editWorkspace, setWorksp
         <ListItem
             secondaryAction={
                 <div>
-
                     <IconButton edge="end" aria-label="open" style={{ margin: 5 }}>
                         <OpenInNewIcon onClick={() => setSelectedWorkspace(workspaceDetails)} />
                     </IconButton>

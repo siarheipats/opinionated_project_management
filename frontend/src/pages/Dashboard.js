@@ -1,6 +1,8 @@
-import { useAuthContext } from "../hooks/useAuthContext";
-
 import * as React from 'react';
+
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useEffect, useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,7 +18,8 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
-
+import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import DashboardMain from "../components/dashmain";
 import Settings from "../components/settings";
 import Workspaces from "../components/workspaces";
@@ -26,13 +29,12 @@ const drawerWidth = 240;
 
 
 
-const Dashboard = () => {
-    const { user } = useAuthContext();
-
+const Dashboard = ({ notifications }) => {
     const [showSettings, setShowSettings] = React.useState();
     const [showWorkspaces, setShowWorkspaces] = React.useState();
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
     const [openedWorkspace, setOpenedWorkspace] = React.useState();
+    const { user } = useAuthContext();
 
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
@@ -104,6 +106,14 @@ const Dashboard = () => {
                                     <WorkspacesIcon />
                                 </ListItemIcon>
                                 <ListItemText primary={'Workspaces'} />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem key='Notifications' disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <CircleNotificationsOutlinedIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={`Notifications (${notifications.length})`} />
                             </ListItemButton>
                         </ListItem>
                     </List>
