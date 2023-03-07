@@ -19,35 +19,36 @@ const style = {
     p: 4,
 };
 
-const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, addWorkspaces }) => {
-    const customerId = userId;
-    const [workspaceName, setWorkspaceName] = useState("");
+const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addColumn }) => {
+    const [boardName, setBoardName] = useState("");
 
     const handleClose = () => {
         showModal = false;
-        setWorkspaceName("");
+        setColumnName("Column");
         handleCloseModalFunction();
     };
 
-    const newWorkspace = async (workspaceName, customerId) => {
-        const response = await fetch('/api/workspace/create', {
+    const newColumn = async (ColumnName, boardId) => {
+        const response = await fetch('/api/column/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ workspaceName, customerId })
+            body: JSON.stringify({ columnName, columnId })
         });
 
         const json = await response.json();
 
         if (response.ok) {
-            addWorkspaces(json);
+            addColumns(json);
+            handleClose();
         }
     }
 
-    const handleCreateWorkspace = async (e) => {
+    const handleCreateBoard = async (e) => {
         e.preventDefault();
-        await newWorkspace(workspaceName, customerId);
+        await newBoard(columnName, boardId);
         handleClose();
     }
+
 
     return (
         <Modal
@@ -57,25 +58,24 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Create New Workspace:
+                    Create New Board:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateWorkspace}>
+                    <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateBoard}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
                             label="Name"
                             autoFocus
-                            onChange={(e) => setWorkspaceName(e.target.value)}
-                            value={workspaceName}
+                            onChange={(e) => setColumnName(e.target.value)}
+                            value={columnName}
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
+                            sx={{ mt: 3, mb: 2 }} >
                             Add
                         </Button>
                         <Button onClick={handleClose}>Close</Button>
@@ -86,4 +86,4 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
     )
 }
 
-export default CreateWorkspaceModal;
+export default CreateColumnModal;

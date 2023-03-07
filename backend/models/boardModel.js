@@ -1,5 +1,6 @@
 const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
+const Workspaces = require("./workspaceModel");
 
 const Boards = sequelize.define("Boards", {
     boardId: {
@@ -12,14 +13,14 @@ const Boards = sequelize.define("Boards", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    boardDescription: { // confirm this member exists in Boards table?
+    boardDescription: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     workspaceId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Workspaces',
+            model: Workspaces,
             key: 'workspaceId'
         }
     }
@@ -29,30 +30,28 @@ const Boards = sequelize.define("Boards", {
     });
 
 async function createBoard(boardName, boardDescription, workspaceId) {
-    if (!boardName || !boardDescription || !workspaceId ) {
+    if (!boardName || !workspaceId ) {
         throw Error('All fields must be filled')
     }
-    const workspace = await Workspaces.findOne({ where: { workspaceId: workspaceId } });
-    if (!workspace) {
-      throw Error("Invalid workspace ID");
-    }
-    const newBoards = await Boards.create({
+    const newBoard = await Boards.create({
         boardId: null, // auto-increment field, set to null to let Sequelize generate a new value
         boardName: boardName,
         boardDescription : boardDescription,
         workspaceId: workspaceId
     })
 
-    return newBoards;
+    return newBoard;
 }
 
-async function readBoard() {
-    const boards = await Boards.findAll();
-    return boards;
+async function getBoard(workspaceId) {
+    const board = await Boards.findAll({
+        where: { workspaceId: workspaceId }
+    });
+    return board;
 }
 
 async function updateBoard(boardId, boardName, boardDescription) {
-    if (!boardId || !boardName || !boardDescription) {
+    if (!boardId || !boardName) {
         throw Error("All fields must be filled.")
     }
 
@@ -66,12 +65,10 @@ async function updateBoard(boardId, boardName, boardDescription) {
     })
 }
 
-async function deleteBoard(boardId, boardName) {
-    if (!boardId || !boardName) {
+async function deleteBoard(boardId) {
+    if (!boardId) {
         throw Error("All fields must be filled.")
     }
-
-    // associate tasks with boards and delete tasks with boards?
 
     await Boards.destroy({
         where: {
@@ -81,6 +78,7 @@ async function deleteBoard(boardId, boardName) {
 }
 
 exports.createBoard = createBoard;
-exports.readBoard = readBoard;
+exports.getBoard = getBoard;
 exports.updateBoard = updateBoard;
 exports.deleteBoard = deleteBoard;
+exports.Boards = Boards;

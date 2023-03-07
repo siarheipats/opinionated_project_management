@@ -24,11 +24,11 @@ const Tasks = sequelize.define("Tasks", {
         }
     },
     taskInfo: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: true
     },
     taskDueDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false
     }
 },
@@ -95,3 +95,4 @@ exports.createTask = createTask;
 exports.getTask = getTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
+exports.Tasks = Tasks;
