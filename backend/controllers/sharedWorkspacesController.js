@@ -13,6 +13,7 @@ const createInvite = async (req, res) => {
 const getCustomerInvites = async (req, res) => {
     const customerId = req.query['customerId'];
     try {
+        
         const invites = await sharedWorkspaceModel.getCustomerInvites(customerId);
         res.status(200).json(invites);
     } catch (error) {

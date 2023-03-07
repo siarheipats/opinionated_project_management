@@ -19,10 +19,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
 import CircleNotificationsOutlinedIcon from '@mui/icons-material/CircleNotificationsOutlined';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import DashboardMain from "../components/dashmain";
 import Settings from "../components/settings";
 import Workspaces from "../components/workspaces";
+import Notifications from "../components/notifications";
 
 const drawerWidth = 240;
 
@@ -34,6 +34,7 @@ const Dashboard = ({ notifications }) => {
     const [showWorkspaces, setShowWorkspaces] = React.useState();
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
     const [openedWorkspace, setOpenedWorkspace] = React.useState();
+    const [showNotifications, setShowNotifications] = React.useState();
     const { user } = useAuthContext();
 
     function setSelectedWorkspace(workspace) {
@@ -49,18 +50,28 @@ const Dashboard = ({ notifications }) => {
         setShowDashboardMain(true);
         setShowSettings(false);
         setShowWorkspaces(false);
+        setShowNotifications(false);
     }
 
     function showSettingsScreen() {
         setShowSettings(true);
         setShowWorkspaces(false);
         setShowDashboardMain(false);
+        setShowNotifications(false);
     }
 
     function showWorkspacesScreen() {
         setShowWorkspaces(true);
         setShowSettings(false);
         setShowDashboardMain(false);
+        setShowNotifications(false);
+    }
+
+    function showNotificationsScreen() {
+        setShowWorkspaces(false);
+        setShowSettings(false);
+        setShowDashboardMain(false);
+        setShowNotifications(true);
     }
 
     return (
@@ -109,7 +120,7 @@ const Dashboard = ({ notifications }) => {
                             </ListItemButton>
                         </ListItem>
                         <ListItem key='Notifications' disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={() => showNotificationsScreen()}>
                                 <ListItemIcon>
                                     <CircleNotificationsOutlinedIcon />
                                 </ListItemIcon>
@@ -144,6 +155,9 @@ const Dashboard = ({ notifications }) => {
                         }
                         {
                             showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} /> : null
+                        }
+                        {
+                            showNotifications ? <Notifications notifications={notifications} /> : null
                         }
                     </Typography>
                 </Box>

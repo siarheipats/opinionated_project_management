@@ -75,4 +75,15 @@ const searchByEmail = async (req, res) => {
     }
 }
 
-module.exports = { signupUser, loginUser, updateName, updatePassword, updateEmail, searchByEmail }
+// get user by Id
+const searchById = async (req, res) => {
+    const customerId = req.query['customerId'];
+    try {
+        const customer = await userModel.searchCustomerById(customerId);
+        res.status(200).json(customer);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+module.exports = { signupUser, loginUser, updateName, updatePassword, updateEmail, searchByEmail, searchById }

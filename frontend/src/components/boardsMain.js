@@ -80,7 +80,6 @@ const BoardsMain = ({ workspaceId }) => {
                 <AddIcon />
                 Create Board
             </Button>
-            Number of board = {boards.length}
             <Demo>
                 {boards.map((board, index) => {
                     return (

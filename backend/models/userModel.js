@@ -166,10 +166,19 @@ async function searchCustomerByEmail(email) {
     return customers;
 }
 
+async function getCustomerById(customerId) {
+    if (!customerId) {
+        throw Error("All fields must be filled.")
+    }
+    const user = await Customers.findOne({ where: { customerId: customerId } });
+    return user;
+}
+
 exports.signup = signup;
 exports.login = login;
 exports.updateName = updateName;
 exports.updatePassword = updatePassword;
 exports.updateEmail = updateEmail;
 exports.searchCustomerByEmail = searchCustomerByEmail;
+exports.searchCustomerById = getCustomerById;
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { signupUser, loginUser, updateName, updatePassword, updateEmail, searchByEmail } = require('../controllers/userController')
+const { signupUser, loginUser, updateName, updatePassword, updateEmail, searchByEmail, searchById } = require('../controllers/userController')
 
 // login route
 router.post('/login', loginUser)
@@ -19,5 +19,8 @@ router.post('/emailchange', updateEmail)
 
 // search by email
 router.get('/searchbyemail', searchByEmail)
+
+//search by Id
+router.get('/searchbyid', searchById)
 
 module.exports = router;
