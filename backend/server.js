@@ -7,6 +7,7 @@ const workspaceRoutes = require('./routes/workspace')
 const boardRoutes = require('./routes/board')
 const columnRoutes = require('./routes/column')
 const taskRoutes = require('./routes/task')
+const sharedWorkspace = require('./routes/sharedWorkspaces')
 const app = express();
 const db = require('./db_connector')
 
@@ -33,6 +34,8 @@ app.use('/api/board', boardRoutes)
 app.use('/api/column', columnRoutes)
 // Register Task Routes
 app.use('/api/task', taskRoutes)
+// Shared Workspaces
+app.use('/api/shared', sharedWorkspace)
 // Listen
 app.listen(PORT, () => {
     console.log(`API is listening on ${PORT}`);
