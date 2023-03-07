@@ -72,7 +72,8 @@ const WorkspaceDetails = ({ workspace, closeWorkspace }) => {
                     <Tab label="People" {...a11yProps(1)} />
                 </Tabs>
                 <TabPanel value={tabValue} index={0}>
-                    <BoardsMain />
+                    <BoardsMain
+                        workspaceId={workspace.workspaceId} />
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
                     <PeopleMain
