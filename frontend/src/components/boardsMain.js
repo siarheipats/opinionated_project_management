@@ -25,6 +25,11 @@ const BoardsMain = ({ workspaceId }) => {
         boardName: "",
         boardDescription: ""
     });
+    const [columns, setColumns] = useState([{
+        columnId: 1,
+        columnName: 'Test',
+        boardId: 0
+    }]);
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -85,7 +90,20 @@ const BoardsMain = ({ workspaceId }) => {
 
     const openBoard = (board) => {
         setSelectedBoard(board);
+        fetchColumns(board);
         setIsDrawerOpen(true);
+    }
+
+    const fetchColumns = async (board) => {
+        const response = await fetch(`/api/column/getcolumns/${board.boardId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+
+        const json = await response.json();
+        if (response.ok) {
+            setColumns(json);
+        }
     }
 
     return (
@@ -131,7 +149,7 @@ const BoardsMain = ({ workspaceId }) => {
                 handleCloseModalFunction={handleCloseModal}
                 addBoards={addBoards}
             />
-            <BoardsDetails board={selectedBoard} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+            <BoardsDetails board={selectedBoard} columns={columns} setColumns={setColumns} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </ThemeProvider>
     )
 }

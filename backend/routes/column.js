@@ -6,7 +6,7 @@ const { createColumn, getColumns, updateColumn, deleteColumn } = require('../con
 router.post('/create', createColumn);
 
 // get columns for a board
-router.get('/:columnId', getColumns);
+router.get('/getcolumns/:_boardId', getColumns);
 
 // update column details
 router.put('/:columnId', updateColumn);

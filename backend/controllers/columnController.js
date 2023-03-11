@@ -11,10 +11,9 @@ const createColumn = async (req, res) => {
   }
 
   const getColumns = async (req, res) => {
-    const { boardId } = req.body;
     try {
-        const Column = await ColumnModel.readColumns(boardId);
-        res.status(200).json(Column);
+        const columns = await ColumnModel.readColumns(req.params['_boardId']);
+        res.status(200).json(columns);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

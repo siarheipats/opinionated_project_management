@@ -37,9 +37,9 @@ async function createColumns(columnName, boardId) {
     return newColumn;
 }
 
-async function readColumns() {
+async function readColumns(boardId) {
     const Column = await Columns.findAll({
-        where: {boardId : boardId}
+        where: { boardId: boardId }
     });
     return Column;
 }
@@ -49,7 +49,7 @@ async function updateColumns(columnId, columnName) {
         throw Error("All fields must be filled.")
     }
 
-    await Columns.update({ 
+    await Columns.update({
         columnName: columnName,
     }, {
         where: {

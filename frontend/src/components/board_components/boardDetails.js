@@ -5,8 +5,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CreateColumnModal from '../columns_components/createColumnModal';
+import ColumnList from '../columns_components/columnList';
 
-const BoardsDetails = ({ board, isDrawerOpen, setIsDrawerOpen }) => {
+const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOpen }) => {
     const [showModal, setShowModal] = useState(false);
     const theme = createTheme();
 
@@ -15,6 +16,12 @@ const BoardsDetails = ({ board, isDrawerOpen, setIsDrawerOpen }) => {
     }
     const handleCloseModal = () => {
         setShowModal(false);
+    }
+
+    const addColumn = (column) => {
+        columns.push(column);
+        setColumns(columns);
+        handleCloseModal();
     }
 
     return (
@@ -27,11 +34,11 @@ const BoardsDetails = ({ board, isDrawerOpen, setIsDrawerOpen }) => {
                         Add Column
                     </Button>
                     <Typography>
-
+                        <ColumnList columns={columns} />
                     </Typography>
                 </Box>
             </Drawer>
-            <CreateColumnModal boardId={board.boardId} showModal={showModal} handleCloseModal={handleCloseModal}/>
+            <CreateColumnModal boardId={board.boardId} showModal={showModal} handleCloseModal={handleCloseModal} addColumn={addColumn} />
         </ThemeProvider>
     )
 }

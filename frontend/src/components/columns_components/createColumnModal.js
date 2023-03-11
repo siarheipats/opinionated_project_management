@@ -19,7 +19,7 @@ const style = {
     p: 4,
 };
 
-const CreateColumnModal = ({ boardId, showModal, handleCloseModal }) => {
+const CreateColumnModal = ({ boardId, showModal, handleCloseModal, addColumn }) => {
     const [columnName, setColumnName] = useState("");
 
     const handleClose = () => {
@@ -38,6 +38,7 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModal }) => {
         const json = await response.json();
 
         if (response.ok) {
+            addColumn(json);
             handleClose();
         }
     }
