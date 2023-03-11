@@ -19,33 +19,32 @@ const style = {
     p: 4,
 };
 
-const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addColumn }) => {
-    const [boardName, setColumnName] = useState("");
+const CreateColumnModal = ({ boardId, showModal, handleCloseModal }) => {
+    const [columnName, setColumnName] = useState("");
 
     const handleClose = () => {
         showModal = false;
-        setColumnName("Column");
-        handleCloseModalFunction();
+        setColumnName("");
+        handleCloseModal();
     };
 
     const newColumn = async (columnName, boardId) => {
         const response = await fetch('/api/column/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ columnName, columnId })
+            body: JSON.stringify({ columnName, boardId })
         });
 
         const json = await response.json();
 
         if (response.ok) {
-            addColumns(json);
             handleClose();
         }
     }
 
-    const handleCreateBoard = async (e) => {
+    const handleCreateColumn = async (e) => {
         e.preventDefault();
-        await newBoard(columnName, boardId);
+        await newColumn(columnName, boardId);
         handleClose();
     }
 
@@ -61,7 +60,7 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addCo
                     Create New Board:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateBoard}>
+                    <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateColumn}>
                         <TextField
                             margin="normal"
                             required

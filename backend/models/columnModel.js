@@ -3,13 +3,13 @@ const { sequelize } = require("../db_connector");
 const Boards = require("./boardModel");
 
 const Columns = sequelize.define("Columns", {
-    culumnId: {
+    columnId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
     },
-    culumnName: {
+    columnName: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -30,7 +30,6 @@ async function createColumns(columnName, boardId) {
         throw Error('All fields must be filled')
     }
     const newColumn = await Columns.create({
-        columnId: null,
         columnName: columnName,
         boardId: boardId
     })
