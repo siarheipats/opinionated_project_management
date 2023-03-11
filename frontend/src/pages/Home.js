@@ -1,5 +1,5 @@
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import React from "react";
 // pages
 import Dashboard from './Dashboard'
@@ -30,12 +30,24 @@ const Home = () => {
         fetchNotification();
     }, [setNotifications]);
 
+    const fetchNotification = async () => {
+        const response = await fetch(`api/shared/getinvites/?customerId=${user.user.customerId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const json = await response.json();
+        if (response.ok) {
+            setNotifications(json);
+        }
+    }
+
     return (
         <div>
             <NavBar notifications={notifications} />
             {user && (
                 <div>
-                    <Dashboard notifications={notifications}/>
+                    <Dashboard notifications={notifications} setNotifications={setNotifications} updateNotifications={fetchNotification}/>
                 </div>
             )}
             {!user && (

@@ -8,6 +8,8 @@ import ListItemText from '@mui/material/ListItemText'
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import BoardsDetails from './board_components/boardDetails';
 
 const Demo = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -16,7 +18,13 @@ const Demo = styled('div')(({ theme }) => ({
 const BoardsMain = ({ workspaceId }) => {
     const [boards, setBoards] = useState([]);
     const [showModal, setShowModal] = useState(false);
-
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [selectedBoard, setSelectedBoard] = useState({
+        boardId: 0,
+        workspaceId: 0,
+        boardName: "",
+        boardDescription: ""
+    });
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -74,6 +82,12 @@ const BoardsMain = ({ workspaceId }) => {
     const handleCloseModal = () => {
         setShowModal(false);
     }
+
+    const openBoard = (board) => {
+        setSelectedBoard(board);
+        setIsDrawerOpen(true);
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Button onClick={handleOpenModal}>
@@ -85,10 +99,19 @@ const BoardsMain = ({ workspaceId }) => {
                     return (
                         <List key={index}>
                             <ListItem>
+
                                 <ListItemText
                                     primary={board.boardName}
                                     secondary={board.dateCreated}
                                 />
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<FolderOpenIcon />}
+                                    onClick={() => openBoard(board)}
+                                >
+                                    Open
+                                </Button>
                                 <Button
                                     variant="contained"
                                     color="secondary"
@@ -108,6 +131,7 @@ const BoardsMain = ({ workspaceId }) => {
                 handleCloseModalFunction={handleCloseModal}
                 addBoards={addBoards}
             />
+            <BoardsDetails board={selectedBoard} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </ThemeProvider>
     )
 }

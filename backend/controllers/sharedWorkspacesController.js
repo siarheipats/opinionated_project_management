@@ -32,9 +32,9 @@ const deleteInvite = async (req, res) => {
 }
 
 const acceptInvite = async (req, res) => {
-    const { inviteId } = req.body;
+    const { inviteId, customerId, workspaceId } = req.body;
     try {
-        const result = await sharedWorkspaceModel.acceptInvite(inviteId);
+        const result = await sharedWorkspaceModel.acceptInvite(inviteId, customerId, workspaceId);
         res.status(200).json(result);
     } catch (error) {
         res.status(400).json({ error: error.message })

@@ -122,7 +122,6 @@ async function deleteInvite(inviteId) {
     if (!inviteId) {
         throw Error('All fields must be filled')
     }
-
     const result = await Invites.destroy({
         where: {
             inviteId: inviteId
@@ -131,17 +130,15 @@ async function deleteInvite(inviteId) {
     return result;
 }
 
-async function acceptInvite(inviteId) {
-    if (!inviteId) {
+async function acceptInvite(inviteId, customerId, workspaceId) {
+    if (!inviteId || !customerId || !workspaceId) {
         throw Error('All fields must be filled')
     }
-    await Invites.update({ isInviteAccepted: 1 }, { where: { inviteId: inviteId } });
-    inviteDetails = await Invites.findOne({ where: { inviteId: inviteId } });
+    await deleteInvite(inviteId);
     const sharedWorkspace = await SharedWorkspaces.create({
-        workspaceId: inviteDetails.workspaceId,
-        customerId: inviteDetails.customerId
-    })
-
+        workspaceId: workspaceId,
+        customerId: customerId
+    });
     return sharedWorkspace;
 }
 

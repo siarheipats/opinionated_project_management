@@ -29,7 +29,7 @@ const drawerWidth = 240;
 
 
 
-const Dashboard = ({ notifications }) => {
+const Dashboard = ({ notifications, setNotifications, updateNotifications }) => {
     const [showSettings, setShowSettings] = React.useState();
     const [showWorkspaces, setShowWorkspaces] = React.useState();
     const [showDashboardMain, setShowDashboardMain] = React.useState(true);
@@ -157,7 +157,7 @@ const Dashboard = ({ notifications }) => {
                             showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} /> : null
                         }
                         {
-                            showNotifications ? <Notifications notifications={notifications} /> : null
+                            showNotifications ? <Notifications notifications={notifications} setNotifications={setNotifications} updateNotifications={updateNotifications}/> : null
                         }
                     </Typography>
                 </Box>
