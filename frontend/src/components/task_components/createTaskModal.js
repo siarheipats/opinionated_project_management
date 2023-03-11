@@ -19,33 +19,33 @@ const style = {
     p: 4,
 };
 
-const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addColumn }) => {
-    const [boardName, setColumnName] = useState("");
+const CreateTaskModal = ({ boardId, showModal, handleCloseModalFunction, addTask }) => {
+    const [boardName, setTaskName] = useState("");
 
     const handleClose = () => {
         showModal = false;
-        setColumnName("Column");
+        setTaskName("Task");
         handleCloseModalFunction();
     };
 
-    const newColumn = async (columnName, boardId) => {
-        const response = await fetch('/api/column/create', {
+    const newTask = async (taskName, boardId) => {
+        const response = await fetch('/api/task/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ columnName, columnId })
+            body: JSON.stringify({ taskName, taskId })
         });
 
         const json = await response.json();
 
         if (response.ok) {
-            addColumns(json);
+            addTasks(json);
             handleClose();
         }
     }
 
     const handleCreateBoard = async (e) => {
         e.preventDefault();
-        await newBoard(columnName, boardId);
+        await newBoard(taskName, boardId);
         handleClose();
     }
 
@@ -68,8 +68,8 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addCo
                             fullWidth
                             label="Name"
                             autoFocus
-                            onChange={(e) => setColumnName(e.target.value)}
-                            value={columnName}
+                            onChange={(e) => setTaskName(e.target.value)}
+                            value={taskName}
                         />
                         <Button
                             type="submit"
@@ -86,4 +86,4 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addCo
     )
 }
 
-export default CreateColumnModal;
+export default CreateTaskModal;
