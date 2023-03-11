@@ -20,7 +20,7 @@ const style = {
 };
 
 const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addColumn }) => {
-    const [boardName, setBoardName] = useState("");
+    const [boardName, setColumnName] = useState("");
 
     const handleClose = () => {
         showModal = false;
@@ -28,7 +28,7 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModalFunction, addCo
         handleCloseModalFunction();
     };
 
-    const newColumn = async (ColumnName, boardId) => {
+    const newColumn = async (columnName, boardId) => {
         const response = await fetch('/api/column/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
