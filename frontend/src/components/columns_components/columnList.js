@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
@@ -9,10 +9,20 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import EditIcon from '@mui/icons-material/Edit';
+import EditColumnModal from './editColumnModal';
 
 
 const ColumnList = ({ columns, setColumns }) => {
+    const [showModal, setShowModal] = useState(false);
+    const [columnToEdit, setColumnToEdit] = useState(0);
     const theme = createTheme();
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+    }
+    const handleCloseModal = () => {
+        setShowModal(false);
+    }
 
     const deleteColumn = async (columnId) => {
         const response = await fetch('/api/column/deletecolumn/', {
@@ -29,6 +39,11 @@ const ColumnList = ({ columns, setColumns }) => {
         }
     }
 
+    const handleEditColumn = (column) => {
+        setColumnToEdit(column);
+        handleOpenModal();
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <Grid sx={{ flexGrow: 1 }} container spacing={2}>
@@ -38,7 +53,7 @@ const ColumnList = ({ columns, setColumns }) => {
                             <Grid key={index} item>
                                 <Paper
                                     sx={{
-                                        height: 5*100,
+                                        height: 5 * 100,
                                         width: 300,
                                         backgroundColor: (theme) =>
                                             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -58,7 +73,7 @@ const ColumnList = ({ columns, setColumns }) => {
                                                                     <DeleteIcon onClick={() => deleteColumn(column.columnId)} />
                                                                 </Grid>
                                                                 <Grid item pr={1}>
-                                                                    <EditIcon/>
+                                                                    <EditIcon onClick={() => handleEditColumn(column)} />
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
@@ -76,6 +91,7 @@ const ColumnList = ({ columns, setColumns }) => {
                     </Grid>
                 </Grid>
             </Grid>
+            <EditColumnModal showModal={showModal} handleCloseModal={handleCloseModal} />
         </ThemeProvider>
     )
 }
