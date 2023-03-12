@@ -1,59 +1,62 @@
 import React from 'react';
 
-import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
+import CloseIcon from '@mui/icons-material/Close';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
-const Demo = styled('div')(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-}));
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
 
 const ColumnList = ({ columns }) => {
     const theme = createTheme();
     return (
         <ThemeProvider theme={theme}>
-            <Demo>
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="stretch"
-                    spacing={0.5}
-                >
-                    {columns.map((column, index) => {
-                        return (
-                            <Card sx={{ width: 345 }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {column.columnName}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
+            <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+                <Grid item xs={12}>
+                    <Grid container spacing={1} wrap="nowrap">
+                        {columns.map((column, index) => (
+                            <Grid key={index} item>
+                                <Paper
+                                    sx={{
+                                        height: 140,
+                                        width: 200,
+                                        backgroundColor: (theme) =>
+                                            theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+                                    }}
+                                >
+                                    <Card sx={{ width: 200 }}>
+                                        <CardActionArea>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h7" component="div">
 
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
+                                                    <Grid container>
+                                                        <Grid item>
+                                                            <h7>{column.columnName}</h7>
+                                                        </Grid>
+                                                        <Grid item xs>
+                                                            <Grid container direction="row-reverse">
+                                                                <Grid item>
+                                                                    <CloseIcon/>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Typography>
+                                                <Typography variant="body2" color="text.secondary">
 
-                        )
-                    })
-
-                    }
-
-                </Stack>
-            </Demo>
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
+            </Grid>
         </ThemeProvider>
     )
 }

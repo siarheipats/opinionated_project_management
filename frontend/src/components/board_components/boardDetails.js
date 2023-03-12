@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 
 import { Drawer, Box, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -32,6 +32,10 @@ const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOp
                     <Button onClick={handleOpenModal}>
                         <AddIcon />
                         Add Column
+                    </Button>
+                    <Button>
+                        <AddIcon />
+                        Add Task
                     </Button>
                     <Typography>
                         <ColumnList columns={columns} />
