@@ -12,6 +12,6 @@ router.get('/getcolumns/:_boardId', getColumns);
 router.put('/:columnId', updateColumn);
 
 // delete column
-router.delete('/:columnId', deleteColumn);
+router.delete('/deletecolumn/', deleteColumn);
 
 module.exports = router;

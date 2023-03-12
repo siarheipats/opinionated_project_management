@@ -38,7 +38,7 @@ const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOp
                         Add Task
                     </Button>
                     <Typography>
-                        <ColumnList columns={columns} />
+                        <ColumnList columns={columns} setColumns={setColumns} />
                     </Typography>
                 </Box>
             </Drawer>

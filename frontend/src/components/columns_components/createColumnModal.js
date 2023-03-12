@@ -58,7 +58,7 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModal, addColumn }) 
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Create New Board:
+                    Add Column:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateColumn}>
@@ -66,7 +66,7 @@ const CreateColumnModal = ({ boardId, showModal, handleCloseModal, addColumn }) 
                             margin="normal"
                             required
                             fullWidth
-                            label="Name"
+                            label="Column Name"
                             autoFocus
                             onChange={(e) => setColumnName(e.target.value)}
                             value={columnName}
