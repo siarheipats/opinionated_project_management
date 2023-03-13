@@ -60,7 +60,7 @@ const CreateWorkspaceModal = ({ userId, showModal, handleCloseModalFunction, add
                     Create New Workspace:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleCreateWorkspace}>
+                    <Box component="form" sx={{ mt: 1 }} onSubmit={handleCreateWorkspace}>
                         <TextField
                             margin="normal"
                             required

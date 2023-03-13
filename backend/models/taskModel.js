@@ -8,20 +8,20 @@ const Tasks = sequelize.define("Tasks", {
         autoIncrement: true,
         primaryKey: true
     },
-    taskName: {
-        type: DataTypes.STRING,
+    boardId: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    boardDescription: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    column: {
+    columnId: {
         type: DataTypes.INTEGER,
         references: {
             model: 'Columns',
             key: 'columnId'
         }
+    },
+    taskName: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     taskInfo: {
         type: DataTypes.STRING,
@@ -37,16 +37,13 @@ const Tasks = sequelize.define("Tasks", {
     });
 
 
-    async function createTask(boardId, taskName, taskInfo, taskDueDate) {
-      if (!boardId || !taskName || !taskInfo) {
+    async function createTask(boardId, columnId, taskName, taskInfo, taskDueDate) {
+      if (!boardId || !columnId || !taskName || !taskInfo || !taskDueDate) {
           throw Error('All fields must be filled')
-      }
-      const board = await Boards.findOne({ where: { boardId: boardId } });
-      if (!board) {
-        throw Error("Invalid board ID");
       }
       const Task = await Tasks.create({
           boardId: boardId,
+          columnId: columnId,
           taskName: taskName,
           taskInfo: taskInfo,
           taskDueDate: taskDueDate
@@ -95,4 +92,3 @@ exports.createTask = createTask;
 exports.getTask = getTask;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;
-exports.Tasks = Tasks;
