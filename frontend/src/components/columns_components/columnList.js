@@ -83,7 +83,13 @@ const ColumnList = ({ columns, setColumns }) => {
                                         </CardActionArea>
                                     </Card>
                                     <Typography variant="body2" color="text.secondary">
-                                        Display Tasks Here
+                                        {column.tasks.map((task, index) => (
+                                            <Card sx={{ width: 300, justifyContent: 'center' }}>
+                                                <CardContent>
+                                                    <p>{task.taskName}</p>
+                                                </CardContent>
+                                            </Card>
+                                        ))}
                                     </Typography>
                                 </Paper>
                             </Grid>

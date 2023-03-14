@@ -37,58 +37,58 @@ const Tasks = sequelize.define("Tasks", {
     });
 
 
-    async function createTask(boardId, columnId, taskName, taskInfo, taskDueDate) {
-      if (!boardId || !columnId || !taskName || !taskInfo || !taskDueDate) {
-          throw Error('All fields must be filled')
-      }
-      const Task = await Tasks.create({
-          boardId: boardId,
-          columnId: columnId,
-          taskName: taskName,
-          taskInfo: taskInfo,
-          taskDueDate: taskDueDate
-      })
-  
-      return Task;
-  }
-  
-  async function getTask(columnId) {
-      const Task = await Tasks.getTask(columnId);
-      return Task;
-  }
-  
-  async function updateTask(taskId, columnId, taskName, taskInfo, taskDueDate) {
-       if (!taskId || !columnId || !taskName ||
-           !taskInfo || !taskDueDate) {
-           throw Error("All fields must be filled.")
-       }
-  
-      await Tasks.updateTask({ 
-          columnId: columnId, 
-          taskName: taskName, 
-          taskInfo: taskInfo, 
-          taskDueDate: taskDueDate
-      }, {
-          where: {
-              taskId: taskId
-          }
-      })
-  }
-  
-  async function deleteTask(taskId) {
-      if (!taskId ) {
-          throw Error("All fields must be filled.")
-      }
-  
-      await Tasks.updateDelete({ 
+async function createTask(boardId, columnId, taskName, taskInfo, taskDueDate) {
+    if (!boardId || !columnId || !taskName || !taskInfo || !taskDueDate) {
+        throw Error('All fields must be filled')
+    }
+    const Task = await Tasks.create({
+        boardId: boardId,
+        columnId: columnId,
+        taskName: taskName,
+        taskInfo: taskInfo,
+        taskDueDate: taskDueDate
+    })
+
+    return Task;
+}
+
+async function getTasks(boardId) {
+    const tasks = await Tasks.findAll({ where: { boardId: boardId } });
+    return tasks;
+}
+
+async function updateTask(taskId, columnId, taskName, taskInfo, taskDueDate) {
+    if (!taskId || !columnId || !taskName ||
+        !taskInfo || !taskDueDate) {
+        throw Error("All fields must be filled.")
+    }
+
+    await Tasks.updateTask({
+        columnId: columnId,
+        taskName: taskName,
+        taskInfo: taskInfo,
+        taskDueDate: taskDueDate
+    }, {
         where: {
             taskId: taskId
-         }
-       })      
-  }
+        }
+    })
+}
+
+async function deleteTask(taskId) {
+    if (!taskId) {
+        throw Error("All fields must be filled.")
+    }
+
+    await Tasks.updateDelete({
+        where: {
+            taskId: taskId
+        }
+    })
+}
 
 
 exports.createTask = createTask;
-exports.getTask = getTask;
+exports.getTasks = getTasks;
 exports.updateTask = updateTask;
 exports.deleteTask = deleteTask;

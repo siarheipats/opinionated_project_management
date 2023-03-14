@@ -6,11 +6,6 @@ const taskModel = require('../models/taskModel');
 //          HTTP 4xx on failure + json error message
 const createTask = async (req, res) => {
   const { boardId, columnId, taskName, taskInfo, taskDueDate } = req.body;
-  console.log(boardId);
-  console.log(columnId);
-  console.log(taskName);
-  console.log(taskInfo);
-  console.log(taskDueDate);
   try {
       const task = await taskModel.createTask(boardId, columnId, taskName, 
                                             taskInfo, taskDueDate);
@@ -24,11 +19,11 @@ const createTask = async (req, res) => {
 // Arguments: taskId
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
-const getTask = async (req, res) => {
-  const { taskId } = req.body;
+const getTasks = async (req, res) => {
+  const  boardId = req.params['_boardId'];
   try {
-      const task = await taskModel.getCustomerTask(taskId);
-      res.status(200).json(Task);
+      const task = await taskModel.getTasks(boardId);
+      res.status(200).json(task);
   } catch (error) {
       res.status(400).json({ error: error.message });
   }
@@ -63,4 +58,4 @@ const deleteTask = async (req, res) => {
   }
 }
 
-module.exports = { createTask, getTask, updateTask, deleteTask }
+module.exports = { createTask, getTasks, updateTask, deleteTask }

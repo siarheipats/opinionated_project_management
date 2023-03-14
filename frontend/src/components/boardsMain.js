@@ -31,6 +31,20 @@ const BoardsMain = ({ workspaceId }) => {
         columnName: 'Test',
         boardId: 0
     }]);
+    const [columnsWIthTasks, setColumnsWithTasks] = useState([{
+        columnId: 1,
+        columnName: 'Test',
+        boardId: 0,
+        tasks: []
+    }]);
+    const [tasks, setTasks] = useState([{
+        taskId: 0,
+        boardId: 0,
+        columnId: 0,
+        taskName: "",
+        taskInfo: "",
+        taskDueDate: ""
+    }]);
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -92,7 +106,21 @@ const BoardsMain = ({ workspaceId }) => {
     const openBoard = (board) => {
         setSelectedBoard(board);
         fetchColumns(board);
+        fetchTasks(board);
+        assignTasksToColumns();
         setIsDrawerOpen(true);
+    }
+
+    const assignTasksToColumns = () => {
+        for (let i = 0; i < columns.length; i++) {
+            columns[i].tasks = [];
+            for (let j = 0; j < tasks.length; j++) {
+                if (columns[i].columnId === tasks[j].columnId) {
+                    columns[i].tasks.push(tasks[j])
+                }
+            }
+        }
+        setColumnsWithTasks(columns);
     }
 
     const fetchColumns = async (board) => {
@@ -104,6 +132,17 @@ const BoardsMain = ({ workspaceId }) => {
         const json = await response.json();
         if (response.ok) {
             setColumns(json);
+        }
+    }
+
+    const fetchTasks = async (board) => {
+        const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        const json = await response.json();
+        if (response.ok) {
+            setTasks(json);
         }
     }
 
@@ -150,7 +189,7 @@ const BoardsMain = ({ workspaceId }) => {
                 handleCloseModalFunction={handleCloseModal}
                 addBoards={addBoards}
             />
-            <BoardsDetails board={selectedBoard} columns={columns} setColumns={setColumns} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+            <BoardsDetails board={selectedBoard} columns={columnsWIthTasks} setColumns={setColumns} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </ThemeProvider>
     )
 }
