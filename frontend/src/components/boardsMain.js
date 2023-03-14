@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import CreateBoardModal from './board_components/createBoardModal';
+import UpdateBoardModal from './board_components/updateBoardModal';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,6 +10,7 @@ import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import EditIcon from '@mui/icons-material/Edit';
 import BoardsDetails from './board_components/boardDetails';
 
 
@@ -18,7 +20,8 @@ const Demo = styled('div')(({ theme }) => ({
 
 const BoardsMain = ({ workspaceId }) => {
     const [boards, setBoards] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState({
         boardId: 0,
@@ -79,7 +82,7 @@ const BoardsMain = ({ workspaceId }) => {
     const addBoards = (board) => {
         boards.push(board);
         setBoards(boards);
-        handleCloseModal();
+        handleCloseCreateModal();
     }
 
     const deleteBoards = async (boardId) => {
@@ -96,13 +99,22 @@ const BoardsMain = ({ workspaceId }) => {
 
     const theme = createTheme();
 
-    const handleOpenModal = () => {
-        setShowModal(true);
+    const handleOpenCreateModal = () => {
+        setShowCreateModal(true);
     }
-    const handleCloseModal = () => {
-        setShowModal(false);
+    const handleCloseCreateModal = () => {
+        setShowCreateModal(false);
     }
 
+    const handleOpenUpdateModal = () => {
+        setShowUpdateModal(true);
+    }
+    
+    const handleCloseUpdateModal = () => {
+        console.log("Closing update modal");
+        setShowUpdateModal(false);
+    }
+    
     const openBoard = (board) => {
         setSelectedBoard(board);
         fetchColumns(board);
@@ -110,7 +122,7 @@ const BoardsMain = ({ workspaceId }) => {
         assignTasksToColumns();
         setIsDrawerOpen(true);
     }
-
+    
     const assignTasksToColumns = () => {
         for (let i = 0; i < columns.length; i++) {
             columns[i].tasks = [];
@@ -122,19 +134,19 @@ const BoardsMain = ({ workspaceId }) => {
         }
         setColumnsWithTasks(columns);
     }
-
+    
     const fetchColumns = async (board) => {
         const response = await fetch(`/api/column/getcolumns/${board.boardId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
-
+    
         const json = await response.json();
         if (response.ok) {
             setColumns(json);
         }
     }
-
+    
     const fetchTasks = async (board) => {
         const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
             method: 'GET',
@@ -145,10 +157,23 @@ const BoardsMain = ({ workspaceId }) => {
             setTasks(json);
         }
     }
-
+    
+    const handleUpdateBoardName = async (boardId, boardName) => {
+        console.log(boardId, boardName)
+        const response = await fetch('/api/board/update', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ boardId, boardName })
+        });
+        if (response.ok) {
+            updateBoards();
+            handleCloseUpdateModal();
+        }
+    }
+    
     return (
         <ThemeProvider theme={theme}>
-            <Button onClick={handleOpenModal}>
+            <Button onClick={handleOpenCreateModal}>
                 <AddIcon />
                 Create Board
             </Button>
@@ -157,7 +182,7 @@ const BoardsMain = ({ workspaceId }) => {
                     return (
                         <List key={index}>
                             <ListItem>
-
+    
                                 <ListItemText
                                     primary={board.boardName}
                                     secondary={board.dateCreated}
@@ -169,6 +194,17 @@ const BoardsMain = ({ workspaceId }) => {
                                     onClick={() => openBoard(board)}
                                 >
                                     Open
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    startIcon={<EditIcon />}
+                                    onClick={() => {
+                                        setSelectedBoard(board);
+                                        handleOpenUpdateModal();
+                                    }}
+                                >
+                                    Update
                                 </Button>
                                 <Button
                                     variant="contained"
@@ -185,9 +221,15 @@ const BoardsMain = ({ workspaceId }) => {
             </Demo>
             <CreateBoardModal
                 workspaceId={workspaceId}
-                showModal={showModal}
-                handleCloseModalFunction={handleCloseModal}
+                showModal={showCreateModal}
+                handleCloseModalFunction={handleCloseCreateModal}
                 addBoards={addBoards}
+            />
+            <UpdateBoardModal
+                board={selectedBoard}
+                showModal={showUpdateModal}
+                handleCloseModalFunction={handleCloseUpdateModal}
+                handleUpdateBoardName={handleUpdateBoardName}
             />
             <BoardsDetails board={selectedBoard} columns={columnsWIthTasks} setColumns={setColumns} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </ThemeProvider>
