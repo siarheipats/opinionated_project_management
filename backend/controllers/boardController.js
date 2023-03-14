@@ -32,9 +32,10 @@ const getBoard = async (req, res) => {
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
 const updateBoard = async (req, res) => {
-  const { boardId, boardName, boardDescription } = req.body;
+  const { boardId, boardName} = req.body;
+  console.log('Received request body:', req.body);
   try {
-    const response = await BoardModel.updateBoard(boardId, boardName, boardDescription);
+    const response = await BoardModel.updateBoard(boardId, boardName);
     res.status(200).json({ response });
   } catch (error) {
     res.status(400).json({ error: error.message })
