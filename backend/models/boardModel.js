@@ -50,14 +50,13 @@ async function getBoard(workspaceId) {
     return board;
 }
 
-async function updateBoard(boardId, boardName, boardDescription) {
+async function updateBoard(boardId, boardName) {
     if (!boardId || !boardName) {
         throw Error("All fields must be filled.")
     }
 
     await Boards.update({ 
         boardName: boardName,
-        boardDescription : boardDescription 
     }, {
         where: {
             boardId: boardId
