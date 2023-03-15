@@ -115,48 +115,57 @@ const BoardsMain = ({ workspaceId }) => {
         setShowUpdateModal(false);
     }
 
-    async function openBoard(board) {
-        await fetchColumns(board);
-        await fetchTasks(board);
-        await assignTasksToColumns();
-        setSelectedBoard(board);
-        setIsDrawerOpen(true);
-    }
-
-    const assignTasksToColumns = async () => {
-        for (let i = 0; i < columns.length; i++) {
-            columns[i].tasks = [];
-            for (let j = 0; j < tasks.length; j++) {
-                if (columns[i].columnId === tasks[j].columnId) {
-                    columns[i].tasks.push(tasks[j])
-                }
-            }
+    const openBoard = async (board) => {
+        try {
+            const [fetchedColumns, fetchedTasks] = await Promise.all([
+                fetchColumns(board),
+                fetchTasks(board)
+            ]);
+    
+            setColumns(fetchedColumns);
+            setTasks(fetchedTasks);
+            assignTasksToColumns(fetchedColumns, fetchedTasks);
+            setSelectedBoard(board);
+            setIsDrawerOpen(true);
+        } catch (error) {
+            console.error('Error fetching columns and tasks:', error);
         }
-        setColumnsWithTasks(columns);
-    }
+    };
+
+    const assignTasksToColumns = (fetchedColumns, fetchedTasks) => {
+        const newColumns = fetchedColumns.map((column) => {
+            const tasksForColumn = fetchedTasks.filter((task) => task.columnId === column.columnId);
+            return { ...column, tasks: tasksForColumn };
+        });
+        setColumnsWithTasks(newColumns);
+    };
 
     const fetchColumns = async (board) => {
         const response = await fetch(`/api/column/getcolumns/${board.boardId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-        })
-
+        });
+    
         const json = await response.json();
         if (response.ok) {
-            setColumns(json);
+            return json;
+        } else {
+            throw new Error('Error fetching columns');
         }
-    }
-
+    };
+    
     const fetchTasks = async (board) => {
         const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-        })
+        });
         const json = await response.json();
         if (response.ok) {
-            setTasks(json);
+            return json;
+        } else {
+            throw new Error('Error fetching tasks');
         }
-    }
+    };
 
     const handleUpdateBoardName = async (boardId, boardName) => {
         const response = await fetch('/api/board/update', {
@@ -179,6 +188,22 @@ const BoardsMain = ({ workspaceId }) => {
           return newColumns;
         });
       };
+
+    const handleUpdateTasks = async (updatedTask) => {
+    const response = await fetch("/api/task/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTask),
+    });
+
+    if (response.ok) {
+        const updatedTaskData = await response.json();
+        const updatedTasks = tasks.map((task) =>
+            task.taskId === updatedTaskData.taskId ? updatedTaskData : task
+        );
+        setTasks(updatedTasks);
+    }
+};
 
     return (
         <ThemeProvider theme={theme}>
@@ -242,10 +267,11 @@ const BoardsMain = ({ workspaceId }) => {
             />
             <BoardsDetails
                 board={selectedBoard}
-                columns={columnsWIthTasks}
+                columnsWithTasks={columnsWIthTasks}
                 setColumns={setColumnsWithTasks}
                 isDrawerOpen={isDrawerOpen}
                 setIsDrawerOpen={setIsDrawerOpen}
+                handleUpdateTasks={handleUpdateTasks}
                 updateTasks={updateTasks}
             />
         </ThemeProvider>

@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import UpdateTaskModal from './updateTaskModal';
 
 const style = {
     position: 'absolute',
@@ -19,7 +20,8 @@ const style = {
     p: 4,
 };
 
-const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTasks }) => {
+const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTasks, handleUpdateTasks }) => {
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     const handleClose = () => {
         showTaskDetails = false;
@@ -48,26 +50,46 @@ const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTask
         handleClose();
     };
 
+    const handleOpenUpdateModal = () => {
+        setShowUpdateModal(true);
+    };
+
+    const handleCloseUpdateModal = () => {
+        setShowUpdateModal(false);
+    };
+
     return (
-        <Modal
-            open={showTaskDetails}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {task.taskName}
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <b>Due Date: </b>{getFormattedDate(task.taskDueDate)}
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2, pb: 5}}>
-                    <b>Details:</b> {task.taskInfo}
-                </Typography>
-                <Button onClick={handleDelete} color="error" variant="outlined" sx={{ mr: 1 }}>Delete</Button>
-                <Button onClick={handleClose}>Close</Button>
-            </Box>
-        </Modal>
+        <>
+            <Modal
+                open={showTaskDetails}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {task.taskName}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <b>Due Date: </b>{getFormattedDate(task.taskDueDate)}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2, pb: 5 }}>
+                        <b>Details:</b> {task.taskInfo}
+                    </Typography>
+                    <Button onClick={handleOpenUpdateModal} variant="contained" color="primary" sx={{ mr: 1 }}>Edit</Button>
+                    <Button onClick={handleDelete} color="error" variant="outlined" sx={{ mr: 1 }}>Delete</Button>
+                    <Button onClick={handleClose}>Close</Button>
+                </Box>
+            </Modal>
+            <UpdateTaskModal
+                taskId={task.taskId}
+                taskName={task.taskName}
+                taskInfo={task.taskInfo}
+                taskDueDate={task.taskDueDate}
+                showModal={showUpdateModal}
+                handleCloseModal={handleCloseUpdateModal}
+                updateTask={updateTasks}
+            />
+        </>
     )
 }
 
