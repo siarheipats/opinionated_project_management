@@ -33,7 +33,7 @@ const getBoard = async (req, res) => {
 //          HTTP 4xx on failure + json error message
 const updateBoard = async (req, res) => {
   const { boardId, boardName} = req.body;
-  console.log('Received request body:', req.body);
+  //console.log('Received request body:', req.body);
   try {
     const response = await BoardModel.updateBoard(boardId, boardName);
     res.status(200).json({ response });

@@ -34,10 +34,10 @@ const getTasks = async (req, res) => {
 // returns: HTTP 2xx on sucess, 
 //          HTTP 4xx on failure + json error message
 const updateTask = async (req, res) => {
-  const { taskId, columnId, taskName, taskInfo, taskDueDate } = req.body;
+  const { taskId, boardId, columnId, taskName, taskInfo, taskDueDate } = req.body;
   try {
-      const response = await TaskModel.updateWorkspaceDetails(taskId, columnId, 
-                                              taskName, taskInfo, taskDueDate);
+      const response = await taskModel.updateTask(
+        taskId, boardId, columnId, taskName, taskInfo, taskDueDate);
       res.status(200).json({ response });
   } catch (error) {
       res.status(400).json({ error: error.message })
@@ -50,8 +50,9 @@ const updateTask = async (req, res) => {
 //          HTTP 4xx on failure + json error message
 const deleteTask = async (req, res) => {
   const { taskId } = req.body;
+  console.log('Received request body:', req.body);
   try {
-      const response = await TaskModel.deleteTask(taskId);
+      const response = await taskModel.deleteTask(taskId);
       res.status(200).json({ response });
   } catch (error) {
       res.status(400).json({ error: error.message })

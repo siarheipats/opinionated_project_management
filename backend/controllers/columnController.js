@@ -31,6 +31,7 @@ const createColumn = async (req, res) => {
 
   const deleteColumn = async (req, res) => {
     const { columnId } = req.body;
+    //console.log('Received request body:', req.body);
     try {
         const response = await ColumnModel.deleteColumns(columnId);
         res.status(200).json({ response });
