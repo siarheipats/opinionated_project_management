@@ -57,13 +57,13 @@ async function getTasks(boardId) {
     return tasks;
 }
 
-async function updateTask(taskId, columnId, taskName, taskInfo, taskDueDate) {
-    if (!taskId || !columnId || !taskName ||
-        !taskInfo || !taskDueDate) {
+async function updateTask(taskId, boardId, columnId, taskName, taskInfo, taskDueDate) {
+    if (!taskId || !boardId || !columnId || !taskName) {
         throw Error("All fields must be filled.")
     }
 
-    await Tasks.updateTask({
+    await Tasks.update({
+        boardId: boardId,
         columnId: columnId,
         taskName: taskName,
         taskInfo: taskInfo,
@@ -80,7 +80,7 @@ async function deleteTask(taskId) {
         throw Error("All fields must be filled.")
     }
 
-    await Tasks.updateDelete({
+    await Tasks.destroy({
         where: {
             taskId: taskId
         }

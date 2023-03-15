@@ -59,6 +59,7 @@ async function updateColumns(columnId, columnName) {
 }
 
 async function deleteColumns(columnId) {
+    //console.log(columnId)
     if (!columnId) {
         throw Error("All fields must be filled.")
     }

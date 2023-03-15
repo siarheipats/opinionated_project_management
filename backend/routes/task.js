@@ -9,9 +9,9 @@ router.post('/create', createTask);
 router.get('/gettasks/:_boardId', getTasks);
 
 // update task details
-router.post('/:taskId', updateTask);
+router.put('/:taskId', updateTask);
 
 // delete task
-router.get('/:taskId', deleteTask);
+router.delete('/:taskId', deleteTask);
 
 module.exports = router;
