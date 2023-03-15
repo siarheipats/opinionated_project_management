@@ -24,26 +24,26 @@ const BoardsMain = ({ workspaceId }) => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState({
-        boardId: 0,
-        workspaceId: 0,
+        boardId: -1,
+        workspaceId: -1,
         boardName: "",
         boardDescription: ""
     });
     const [columns, setColumns] = useState([{
-        columnId: 1,
-        columnName: 'Test',
-        boardId: 0
+        columnId: -1,
+        columnName: '',
+        boardId: -1
     }]);
     const [columnsWIthTasks, setColumnsWithTasks] = useState([{
-        columnId: 1,
-        columnName: 'Test',
-        boardId: 0,
-        tasks: []
+        columnId: null,
+        columnName: null,
+        boardId: null,
+        tasks: null
     }]);
     const [tasks, setTasks] = useState([{
-        taskId: 0,
-        boardId: 0,
-        columnId: 0,
+        taskId: -1,
+        boardId: -1,
+        columnId: -1,
         taskName: "",
         taskInfo: "",
         taskDueDate: ""
@@ -63,7 +63,7 @@ const BoardsMain = ({ workspaceId }) => {
             }
         }
         fetchBoards();
-    }, []);
+    }, [workspaceId]);
 
     const updateBoards = () => {
         const fetchBoards = async () => {
@@ -109,21 +109,21 @@ const BoardsMain = ({ workspaceId }) => {
     const handleOpenUpdateModal = () => {
         setShowUpdateModal(true);
     }
-    
+
     const handleCloseUpdateModal = () => {
         console.log("Closing update modal");
         setShowUpdateModal(false);
     }
-    
-    const openBoard = (board) => {
+
+    async function openBoard(board) {
+        await fetchColumns(board);
+        await fetchTasks(board);
+        await assignTasksToColumns();
         setSelectedBoard(board);
-        fetchColumns(board);
-        fetchTasks(board);
-        assignTasksToColumns();
         setIsDrawerOpen(true);
     }
-    
-    const assignTasksToColumns = () => {
+
+    const assignTasksToColumns = async () => {
         for (let i = 0; i < columns.length; i++) {
             columns[i].tasks = [];
             for (let j = 0; j < tasks.length; j++) {
@@ -134,19 +134,19 @@ const BoardsMain = ({ workspaceId }) => {
         }
         setColumnsWithTasks(columns);
     }
-    
+
     const fetchColumns = async (board) => {
         const response = await fetch(`/api/column/getcolumns/${board.boardId}`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
-    
+
         const json = await response.json();
         if (response.ok) {
             setColumns(json);
         }
     }
-    
+
     const fetchTasks = async (board) => {
         const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
             method: 'GET',
@@ -157,9 +157,8 @@ const BoardsMain = ({ workspaceId }) => {
             setTasks(json);
         }
     }
-    
+
     const handleUpdateBoardName = async (boardId, boardName) => {
-        console.log(boardId, boardName)
         const response = await fetch('/api/board/update', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -170,7 +169,7 @@ const BoardsMain = ({ workspaceId }) => {
             handleCloseUpdateModal();
         }
     }
-    
+
     return (
         <ThemeProvider theme={theme}>
             <Button onClick={handleOpenCreateModal}>
@@ -182,7 +181,7 @@ const BoardsMain = ({ workspaceId }) => {
                     return (
                         <List key={index}>
                             <ListItem>
-    
+
                                 <ListItemText
                                     primary={board.boardName}
                                     secondary={board.dateCreated}
@@ -191,7 +190,7 @@ const BoardsMain = ({ workspaceId }) => {
                                     variant="contained"
                                     color="secondary"
                                     startIcon={<FolderOpenIcon />}
-                                    onClick={() => openBoard(board)}
+                                    onClick={async (e) => { await openBoard(board); }}
                                 >
                                     Open
                                 </Button>
@@ -231,7 +230,7 @@ const BoardsMain = ({ workspaceId }) => {
                 handleCloseModalFunction={handleCloseUpdateModal}
                 handleUpdateBoardName={handleUpdateBoardName}
             />
-            <BoardsDetails board={selectedBoard} columns={columnsWIthTasks} setColumns={setColumns} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+            <BoardsDetails board={selectedBoard} columns={columnsWIthTasks} setColumns={setColumnsWithTasks} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
         </ThemeProvider>
     )
 }

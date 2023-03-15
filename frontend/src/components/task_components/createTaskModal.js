@@ -59,7 +59,11 @@ const CreateTaskModal = ({ boardId, columns, showModal, handleCloseModal }) => {
         const json = await response.json();
 
         if (response.ok) {
-
+            for(let i = 0; i < columns.length; i++) {
+                if(columns[i].columnId === columnId) {
+                    columns[i].tasks.push(json);
+                }
+            }
         }
     }
 
