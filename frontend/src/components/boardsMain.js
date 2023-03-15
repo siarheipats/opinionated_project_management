@@ -121,7 +121,7 @@ const BoardsMain = ({ workspaceId }) => {
                 fetchColumns(board),
                 fetchTasks(board)
             ]);
-    
+
             setColumns(fetchedColumns);
             setTasks(fetchedTasks);
             assignTasksToColumns(fetchedColumns, fetchedTasks);
@@ -145,7 +145,7 @@ const BoardsMain = ({ workspaceId }) => {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-    
+
         const json = await response.json();
         if (response.ok) {
             return json;
@@ -153,7 +153,7 @@ const BoardsMain = ({ workspaceId }) => {
             throw new Error('Error fetching columns');
         }
     };
-    
+
     const fetchTasks = async (board) => {
         const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
             method: 'GET',
@@ -181,29 +181,30 @@ const BoardsMain = ({ workspaceId }) => {
 
     const updateTasks = (deletedTaskId) => {
         setColumnsWithTasks((prevColumns) => {
-          const newColumns = prevColumns.map((column) => ({
-            ...column,
-            tasks: column.tasks.filter((task) => task.taskId !== deletedTaskId),
-          }));
-          return newColumns;
+            const newColumns = prevColumns.map((column) => ({
+                ...column,
+                tasks: column.tasks.filter((task) => task.taskId !== deletedTaskId),
+            }));
+            return newColumns;
         });
-      };
+    };
 
     const handleUpdateTasks = async (updatedTask) => {
-    const response = await fetch("/api/task/update", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedTask),
-    });
+        const response = await fetch("/api/task/update", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedTask),
+        });
 
-    if (response.ok) {
-        const updatedTaskData = await response.json();
-        const updatedTasks = tasks.map((task) =>
-            task.taskId === updatedTaskData.taskId ? updatedTaskData : task
-        );
-        setTasks(updatedTasks);
-    }
-};
+        if (response.ok) {
+            const updatedTaskData = await response.json();
+            const updatedTasks = tasks.map((task) =>
+                task.taskId === updatedTask.taskId ? updatedTask : task
+            );
+            setTasks(updatedTasks);
+            assignTasksToColumns(columnsWIthTasks, updatedTasks);
+        }
+    };
 
     return (
         <ThemeProvider theme={theme}>

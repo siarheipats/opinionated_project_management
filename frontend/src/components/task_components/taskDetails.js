@@ -20,7 +20,7 @@ const style = {
     p: 4,
 };
 
-const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTasks, handleUpdateTasks }) => {
+const TaskDetails = ({ task, setTask, showTaskDetails, handleCloseTaskDetails, updateTasks, handleUpdateTasks }) => {
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     const handleClose = () => {
@@ -77,17 +77,21 @@ const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTask
                     </Typography>
                     <Button onClick={handleOpenUpdateModal} variant="contained" color="primary" sx={{ mr: 1 }}>Edit</Button>
                     <Button onClick={handleDelete} color="error" variant="outlined" sx={{ mr: 1 }}>Delete</Button>
-                    <Button onClick={handleClose}>Close</Button>
+                    <Button onClick={handleClose} variant="outlined">Close</Button>
                 </Box>
             </Modal>
             <UpdateTaskModal
                 taskId={task.taskId}
+                boardId={task.boardId}
+                columnId={task.columnId}
                 taskName={task.taskName}
                 taskInfo={task.taskInfo}
                 taskDueDate={task.taskDueDate}
                 showModal={showUpdateModal}
                 handleCloseModal={handleCloseUpdateModal}
                 updateTask={updateTasks}
+                handleUpdateTasks={handleUpdateTasks}
+                setTask={setTask}
             />
         </>
     )

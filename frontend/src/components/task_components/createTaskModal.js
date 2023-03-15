@@ -82,9 +82,6 @@ const CreateTaskModal = ({ boardId, columns, showModal, handleCloseModal }) => {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Add New Task:
                 </Typography>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Column: {column}
-                </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     <Box component="form" sx={{ mt: 1 }} onSubmit={handleCreateTask}>
                         <TextField
