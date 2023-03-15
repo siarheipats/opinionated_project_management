@@ -9,7 +9,7 @@ router.post('/create', createTask);
 router.get('/gettasks/:_boardId', getTasks);
 
 // update task details
-router.put('/:taskId', updateTask);
+router.put('/update/', updateTask);
 
 // delete task
 router.delete('/:taskId', deleteTask);

@@ -28,7 +28,7 @@ const BoardsDetails = ({ board, columnsWithTasks, setColumns, isDrawerOpen, setI
     }
 
     const addColumn = (column) => {
-        column.task = [];
+        column.tasks = [];
         columnsWithTasks.push(column);
         setColumns(columnsWithTasks);
         handleCloseAddColumnModal();
