@@ -8,7 +8,7 @@ import CreateColumnModal from '../columns_components/createColumnModal';
 import ColumnList from '../columns_components/columnList';
 import CreateTaskModal from '../task_components/createTaskModal';
 
-const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOpen }) => {
+const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOpen, updateTasks }) => {
     const [addColumnModal, setAddColumnModal] = useState(false);
     const [addTaskModal, setAddTaskModal] = useState(false);
     const theme = createTheme();
@@ -47,7 +47,7 @@ const BoardsDetails = ({ board, columns, setColumns, isDrawerOpen, setIsDrawerOp
                         Add Task
                     </Button>
                     <Typography>
-                        <ColumnList columns={columns} setColumns={setColumns} />
+                        <ColumnList columns={columns} setColumns={setColumns} updateTasks={updateTasks} />
                     </Typography>
                 </Box>
             </Drawer>

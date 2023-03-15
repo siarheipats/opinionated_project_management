@@ -170,6 +170,16 @@ const BoardsMain = ({ workspaceId }) => {
         }
     }
 
+    const updateTasks = (deletedTaskId) => {
+        setColumnsWithTasks((prevColumns) => {
+          const newColumns = prevColumns.map((column) => ({
+            ...column,
+            tasks: column.tasks.filter((task) => task.taskId !== deletedTaskId),
+          }));
+          return newColumns;
+        });
+      };
+
     return (
         <ThemeProvider theme={theme}>
             <Button onClick={handleOpenCreateModal}>
@@ -230,7 +240,14 @@ const BoardsMain = ({ workspaceId }) => {
                 handleCloseModalFunction={handleCloseUpdateModal}
                 handleUpdateBoardName={handleUpdateBoardName}
             />
-            <BoardsDetails board={selectedBoard} columns={columnsWIthTasks} setColumns={setColumnsWithTasks} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
+            <BoardsDetails
+                board={selectedBoard}
+                columns={columnsWIthTasks}
+                setColumns={setColumnsWithTasks}
+                isDrawerOpen={isDrawerOpen}
+                setIsDrawerOpen={setIsDrawerOpen}
+                updateTasks={updateTasks}
+            />
         </ThemeProvider>
     )
 }

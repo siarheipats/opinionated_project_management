@@ -13,7 +13,7 @@ import EditColumnModal from './editColumnModal';
 import TaskDetails from '../task_components/taskDetails';
 
 
-const ColumnList = ({ columns, setColumns }) => {
+const ColumnList = ({ columns, setColumns, updateTasks }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState([]);
     const [showTaskDetails, setShowTaskDetails] = useState(false);
@@ -125,7 +125,7 @@ const ColumnList = ({ columns, setColumns }) => {
                     </Grid>
                 </Grid>
             </Grid>
-            <TaskDetails task={selectedTask} showTaskDetails={showTaskDetails} handleCloseTaskDetails={handlCloseTaskDetail}/>
+            <TaskDetails task={selectedTask} showTaskDetails={showTaskDetails} handleCloseTaskDetails={handlCloseTaskDetail} updateTasks={updateTasks}/>
             <EditColumnModal showModal={showModal} handleCloseModal={handleCloseModal} />
         </ThemeProvider>
     )

@@ -19,7 +19,7 @@ const style = {
     p: 4,
 };
 
-const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails }) => {
+const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails, updateTasks }) => {
 
     const handleClose = () => {
         showTaskDetails = false;
@@ -30,6 +30,23 @@ const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails }) => {
         var javaDate = new Date(date);
         return javaDate.toDateString();
     }
+
+    const deleteTask = async (taskId) => {
+        const response = await fetch("/api/task/deleteTask", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ taskId }),
+        });
+
+        if (response.ok) {
+            updateTasks(taskId);
+        }
+    };
+
+    const handleDelete = () => {
+        deleteTask(task.taskId);
+        handleClose();
+    };
 
     return (
         <Modal
@@ -47,6 +64,7 @@ const TaskDetails = ({ task, showTaskDetails, handleCloseTaskDetails }) => {
                 <Typography id="modal-modal-description" sx={{ mt: 2, pb: 5}}>
                     <b>Details:</b> {task.taskInfo}
                 </Typography>
+                <Button onClick={handleDelete} color="error" variant="outlined" sx={{ mr: 1 }}>Delete</Button>
                 <Button onClick={handleClose}>Close</Button>
             </Box>
         </Modal>
