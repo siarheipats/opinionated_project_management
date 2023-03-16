@@ -154,6 +154,21 @@ const BoardsMain = ({ workspaceId }) => {
         }
     };
 
+    const refreshColumns = async (board) => {
+        try {
+            const [fetchedColumns, fetchedTasks] = await Promise.all([
+                fetchColumns(selectedBoard),
+                fetchTasks(selectedBoard)
+            ]);
+
+            setColumns(fetchedColumns);
+            setTasks(fetchedTasks);
+            assignTasksToColumns(fetchedColumns, fetchedTasks);
+        } catch (error) {
+            console.error('Error fetching columns and tasks:', error);
+        }
+    }
+
     const fetchTasks = async (board) => {
         const response = await fetch(`/api/task/gettasks/${board.boardId}`, {
             method: 'GET',
@@ -269,11 +284,13 @@ const BoardsMain = ({ workspaceId }) => {
             <BoardsDetails
                 board={selectedBoard}
                 columnsWithTasks={columnsWIthTasks}
+                setColumnsWithTasks={setColumnsWithTasks}
                 setColumns={setColumnsWithTasks}
                 isDrawerOpen={isDrawerOpen}
                 setIsDrawerOpen={setIsDrawerOpen}
                 handleUpdateTasks={handleUpdateTasks}
                 updateTasks={updateTasks}
+                refreshColumns={refreshColumns}
             />
         </ThemeProvider>
     )

@@ -19,7 +19,7 @@ const style = {
     p: 4,
 };
 
-const EditColumnModal = ({ column, showModal, handleCloseModal }) => {
+const EditColumnModal = ({ column, showModal, handleCloseModal, handleUpdateColumnName }) => {
     const [columnName, setColumnName] = useState("");
 
     const handleClose = () => {
@@ -28,18 +28,25 @@ const EditColumnModal = ({ column, showModal, handleCloseModal }) => {
         handleCloseModal();
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setColumnName("");
+        handleUpdateColumnName(column.columnId, columnName);
+        handleCloseModal();
+    }
+
     return (
         <Modal
             open={showModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={style} >
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Add Column:
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <Box>
+                    <Box component="form" onSubmit={handleSubmit}>
                         <TextField
                             margin="normal"
                             required

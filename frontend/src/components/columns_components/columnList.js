@@ -20,7 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 
-const ColumnList = ({ columns, setColumns, updateTasks, handleUpdateTasks }) => {
+const ColumnList = ({ columns, setColumns, updateTasks, handleUpdateTasks, refreshColumns }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState([]);
     const [showTaskDetails, setShowTaskDetails] = useState(false);
@@ -54,6 +54,20 @@ const ColumnList = ({ columns, setColumns, updateTasks, handleUpdateTasks }) => 
     const handlCloseTaskDetail = () => {
         setShowTaskDetails(false);
     }
+
+    const handleUpdateColumnName = async (columnId, columnName) => {
+        const response = await fetch('/api/column/update', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ columnId, columnName })
+        });
+
+        if (response.ok) {
+            refreshColumns();
+            handleCloseModal();
+        }
+    }
+
 
     const deleteColumn = async (columnId) => {
         const response = await fetch('/api/column/deletecolumn/', {
@@ -156,7 +170,7 @@ const ColumnList = ({ columns, setColumns, updateTasks, handleUpdateTasks }) => 
                 </Grid>
             </Grid>
             <TaskDetails task={selectedTask} setTask={setSelectedTask} showTaskDetails={showTaskDetails} handleCloseTaskDetails={handlCloseTaskDetail} updateTasks={updateTasks} handleUpdateTasks={handleUpdateTasks} />
-            <EditColumnModal showModal={showModal} handleCloseModal={handleCloseModal} />
+            <EditColumnModal column={columnToEdit} showModal={showModal} handleCloseModal={handleCloseModal} handleUpdateColumnName={handleUpdateColumnName}/>
             <SimpleDialog selectedValue={selectedColumnDestination} open={openReasignTaskScreen} onClose={handleCloseReassign} columns={columns} setColumns={setColumns} task={taskToMove} />
         </ThemeProvider>
     )
@@ -203,7 +217,7 @@ function SimpleDialog(props) {
                     columns[i].tasks.splice(j, 1);
                 }
             }
-            if (columns[i].columnId == destinationColumn.columnId) {
+            if (columns[i].columnId === destinationColumn.columnId) {
                 columns[i].tasks.push(task);
             }
         }

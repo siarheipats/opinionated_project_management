@@ -9,7 +9,7 @@ router.post('/create', createColumn);
 router.get('/getcolumns/:_boardId', getColumns);
 
 // update column details
-router.put('/:columnId', updateColumn);
+router.put('/update', updateColumn);
 
 // delete column
 router.delete('/deletecolumn/', deleteColumn);
