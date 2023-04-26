@@ -36,7 +36,10 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
     const [openedWorkspace, setOpenedWorkspace] = useState();
     const [showNotifications, setShowNotifications] = useState();
     const { user } = useAuthContext();
-
+    let notificationsLength = 0;
+    if (notifications !== undefined || notifications !== null) {
+        notificationsLength = notifications.length;
+    }
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
         addRecentlyOpened(workspace);
@@ -139,7 +142,7 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
                                 <ListItemIcon>
                                     <CircleNotificationsOutlinedIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={`Notifications (${notifications.length})`} />
+                                <ListItemText primary={`Notifications (${notificationsLength})`} />
                             </ListItemButton>
                         </ListItem>
                     </List>
@@ -169,7 +172,7 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
                                 setSelectedWorkspace={setSelectedWorkspace} /> : null
                         }
                         {
-                            showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} recentlyOpened={recentlyOpened} setRecentlyOpened={setRecentlyOpened} setSelectedWorkspace={setSelectedWorkspace}/> : null
+                            showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} recentlyOpened={recentlyOpened} setRecentlyOpened={setRecentlyOpened} setSelectedWorkspace={setSelectedWorkspace} /> : null
                         }
                         {
                             showNotifications ? <Notifications notifications={notifications} setNotifications={setNotifications} updateNotifications={updateNotifications} /> : null

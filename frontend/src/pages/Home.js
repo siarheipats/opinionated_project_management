@@ -13,6 +13,8 @@ const Home = () => {
     const { user } = useAuthContext();
 
     useEffect(() => {
+        const localstorageUser = JSON.parse(localStorage.getItem('user'));
+        setNotifications([]);
         const fetchRecentlyOpened = async () => {
             const response = await fetch(`/api/recentlist/recentlist/${localstorageUser.user.customerId}`, {
                 method: 'GET',
@@ -34,10 +36,10 @@ const Home = () => {
                 setNotifications(json);
             }
         }
-        const localstorageUser = JSON.parse(localStorage.getItem('user'));
+
         fetchRecentlyOpened();
         fetchNotification();
-    }, [setRecentlyOpened]);
+    }, [setRecentlyOpened, setNotifications]);
 
     const fetchNotification = async () => {
         const response = await fetch(`api/shared/getinvites/?customerId=${user.user.customerId}`, {

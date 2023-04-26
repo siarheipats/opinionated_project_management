@@ -12,7 +12,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 const Notifications = ({ notifications, setNotifications, updateNotifications }) => {
-
     const deleteInvite = (invite) => {
         const inviteId = invite.inviteId;
         const fetchDeleteInvite = async () => {
@@ -72,7 +71,7 @@ const Notifications = ({ notifications, setNotifications, updateNotifications })
                                     secondaryAction={
                                         <div>
                                             <IconButton edge="end" aria-label="open" style={{ margin: 5 }}>
-                                                <CheckIcon onClick={() => acceptInvite(notification)}/>
+                                                <CheckIcon onClick={() => acceptInvite(notification)} />
                                             </IconButton>
                                             <IconButton edge="end" aria-label="delete">
                                                 <ClearIcon onClick={() => deleteInvite(notification)} />

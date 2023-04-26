@@ -68,6 +68,8 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
                             />
+
+                            {error && <div className='error'>{error}</div>}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -77,9 +79,7 @@ const Login = () => {
                             >
                                 Sign In
                             </Button>
-                            {error && <div className='error'>{error}</div>}
                         </Box>
-
 
                         <Grid container justifyContent="flex-end">
                             <Grid item>
