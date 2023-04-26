@@ -28,13 +28,6 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await login(email, password);
-        // TODO workout the logic so it wont redirect to / after incorrect input
-        if (!error) {
-            navigate('/');
-        }
-        else {
-            // Do nothing
-        }
     }
 
     return (
@@ -84,8 +77,9 @@ const Login = () => {
                             >
                                 Sign In
                             </Button>
+                            {error && <div className='error'>{error}</div>}
                         </Box>
-                        {error && <div>{error}</div>}
+
 
                         <Grid container justifyContent="flex-end">
                             <Grid item>

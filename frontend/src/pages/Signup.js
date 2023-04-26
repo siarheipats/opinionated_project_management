@@ -32,13 +32,6 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await signup(email, phoneNumber, firstName, lastName, password);
-        // TODO workout the logic so it wont redirect to / after incorrect input
-        if (!error) {
-            navigate('/');
-        }
-        else {
-            // Do nothing
-        }
     }
 
     return (
@@ -108,7 +101,7 @@ const Signup = () => {
                                     />
                                 </Grid>
                             </Grid>
-                            {error && <div>{error}</div>}
+                            {error && <div className='error'>{error}</div>}
                             <Button
                                 type="submit"
                                 fullWidth
