@@ -30,16 +30,15 @@ const Boards = sequelize.define("Boards", {
     });
 
 async function createBoard(boardName, boardDescription, workspaceId) {
-    if (!boardName || !workspaceId ) {
+    if (!boardName || !workspaceId) {
         throw Error('All fields must be filled')
     }
     const newBoard = await Boards.create({
         boardId: null, // auto-increment field, set to null to let Sequelize generate a new value
         boardName: boardName,
-        boardDescription : boardDescription,
+        boardDescription: boardDescription,
         workspaceId: workspaceId
-    })
-
+    });
     return newBoard;
 }
 
@@ -55,7 +54,7 @@ async function updateBoard(boardId, boardName) {
         throw Error("All fields must be filled.")
     }
 
-    await Boards.update({ 
+    await Boards.update({
         boardName: boardName,
     }, {
         where: {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -29,17 +29,32 @@ const drawerWidth = 240;
 
 
 
-const Dashboard = ({ notifications, setNotifications, updateNotifications }) => {
-    const [showSettings, setShowSettings] = React.useState();
-    const [showWorkspaces, setShowWorkspaces] = React.useState();
-    const [showDashboardMain, setShowDashboardMain] = React.useState(true);
-    const [openedWorkspace, setOpenedWorkspace] = React.useState();
-    const [showNotifications, setShowNotifications] = React.useState();
+const Dashboard = ({ notifications, setNotifications, updateNotifications, recentlyOpened, setRecentlyOpened, fetchRecentlyOpened }) => {
+    const [showSettings, setShowSettings] = useState();
+    const [showWorkspaces, setShowWorkspaces] = useState();
+    const [showDashboardMain, setShowDashboardMain] = useState(true);
+    const [openedWorkspace, setOpenedWorkspace] = useState();
+    const [showNotifications, setShowNotifications] = useState();
     const { user } = useAuthContext();
 
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
+        addRecentlyOpened(workspace);
         goHome();
+    }
+
+    const addRecentlyOpened = async (workspaceData) => {
+        let workspace = JSON.stringify(workspaceData);
+        let recentlyOpenedId = recentlyOpened.recentlyOpenedId;
+        let customerId = recentlyOpened.customerId;
+        const response = await fetch('/api/recentlist/recentlist/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ recentlyOpenedId, customerId, workspace })
+        });
+        if (response.ok) {
+            fetchRecentlyOpened(workspace);
+        }
     }
 
     function closeWorkspace() {
@@ -154,10 +169,10 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications }) => 
                                 setSelectedWorkspace={setSelectedWorkspace} /> : null
                         }
                         {
-                            showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} /> : null
+                            showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} recentlyOpened={recentlyOpened} setRecentlyOpened={setRecentlyOpened} setSelectedWorkspace={setSelectedWorkspace}/> : null
                         }
                         {
-                            showNotifications ? <Notifications notifications={notifications} setNotifications={setNotifications} updateNotifications={updateNotifications}/> : null
+                            showNotifications ? <Notifications notifications={notifications} setNotifications={setNotifications} updateNotifications={updateNotifications} /> : null
                         }
                     </Typography>
                 </Box>

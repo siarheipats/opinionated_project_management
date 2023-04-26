@@ -76,3 +76,11 @@ CREATE TABLE `opm`.`Invites` (
     FOREIGN KEY (`workspaceId`) REFERENCES `Workspaces` (`workspaceId`),
     FOREIGN KEY (`customerId`) REFERENCES `Customers` (`customerId`)
 );
+
+CREATE TABLE IF NOT EXISTS `opm`.`RecentlyOpened` (
+  `recentlyOpenedId` INT AUTO_INCREMENT,
+  `customerId` INT NOT NULL,
+  `recentList` VARCHAR(1000) NULL,
+  PRIMARY KEY (`recentlyOpenedId`),
+  FOREIGN KEY (customerId) REFERENCES Customers (customerId)
+);
