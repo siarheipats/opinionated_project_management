@@ -62,6 +62,7 @@ const EmailChange = () => {
                             onChange={(e) => setNewEmail(e.target.value)}
                             value={newEmail}
                         />
+                        {error && <div className='error'>{error}</div>}
                         <Button
                             type="submit"
                             fullWidth

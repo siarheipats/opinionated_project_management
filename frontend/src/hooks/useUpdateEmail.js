@@ -18,6 +18,11 @@ export const useUpdateEmail = () => {
 
         const json = await response.json();
 
+        if(!response.ok) {
+            setIsLoading(false);
+            setError(json.error)
+        }
+
         if (response.ok) {
             localStorage.removeItem('user');
             localStorage.setItem('user', JSON.stringify(json));
