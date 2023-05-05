@@ -43,7 +43,7 @@ function a11yProps(index) {
     };
 }
 
-const Settings = () => {
+const Settings = ({ goHome, showSettingsSuccesMessage }) => {
 
     const [value, setValue] = React.useState(1);
     const handleChange = (event, newValue) => {
@@ -66,13 +66,13 @@ const Settings = () => {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={1}>
-                    <NameChange />
+                    <NameChange goHome={goHome} showSettingsSuccesMessage={showSettingsSuccesMessage} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <EmailChange />
+                    <EmailChange goHome={goHome} showSettingsSuccesMessage={showSettingsSuccesMessage} />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <PasswordChange />
+                    <PasswordChange goHome={goHome} showSettingsSuccesMessage={showSettingsSuccesMessage} />
                 </TabPanel>
             </Box>
         </React.Fragment>

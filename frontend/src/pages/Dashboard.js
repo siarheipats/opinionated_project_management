@@ -23,11 +23,17 @@ import DashboardMain from "../components/dashmain";
 import Settings from "../components/settings";
 import Workspaces from "../components/workspaces";
 import Notifications from "../components/notifications";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const drawerWidth = 240;
 
 
-
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Dashboard = ({ notifications, setNotifications, updateNotifications, recentlyOpened, setRecentlyOpened, fetchRecentlyOpened }) => {
     const [showSettings, setShowSettings] = useState();
@@ -35,11 +41,27 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
     const [showDashboardMain, setShowDashboardMain] = useState(true);
     const [openedWorkspace, setOpenedWorkspace] = useState();
     const [showNotifications, setShowNotifications] = useState();
+    const [open, setOpen] = React.useState(false);
     const { user } = useAuthContext();
+
     let notificationsLength = 0;
     if (notifications !== undefined || notifications !== null) {
         notificationsLength = notifications.length;
     }
+
+    const openSuccess = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+
     function setSelectedWorkspace(workspace) {
         setOpenedWorkspace(workspace);
         addRecentlyOpened(workspace);
@@ -90,6 +112,10 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
         setShowSettings(false);
         setShowDashboardMain(false);
         setShowNotifications(true);
+    }
+
+    function showSettingsSuccesMessage() {
+        openSuccess();
     }
 
     return (
@@ -165,7 +191,7 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
                     <Toolbar />
                     <Typography paragraph>
                         {
-                            showSettings ? <Settings /> : null
+                            showSettings ? <Settings goHome={goHome} showSettingsSuccesMessage={showSettingsSuccesMessage} /> : null
                         }
                         {
                             showWorkspaces ? <Workspaces
@@ -180,6 +206,13 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
                     </Typography>
                 </Box>
             </Box>
+            <Stack spacing={2} sx={{ width: '100%' }}>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Account changes saved
+                    </Alert>
+                </Snackbar>
+            </Stack>
         </div>
     )
 }

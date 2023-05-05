@@ -13,7 +13,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import EmailIcon from '@mui/icons-material/Email';
 import Typography from '@mui/material/Typography';
 
-const EmailChange = () => {
+const EmailChange = ({ goHome, showSettingsSuccesMessage }) => {
     const { user } = useAuthContext();
     const [oldEmail, setOldEmail] = useState(user.user.email);
     const [newEmail, setNewEmail] = useState('');
@@ -24,6 +24,10 @@ const EmailChange = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await updateEmail(user.user.customerId, newEmail);
+        if (error !== null) {
+            goHome();
+            showSettingsSuccesMessage();
+        }
     }
 
     return (
@@ -44,15 +48,6 @@ const EmailChange = () => {
                     </Typography>
                     <br />
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Current Email Address"
-                            autoFocus
-                            onChange={(e) => setOldEmail(e.target.value)}
-                            value={oldEmail}
-                        />
                         <TextField
                             margin="normal"
                             required

@@ -13,7 +13,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import PasswordIcon from '@mui/icons-material/Password';
 
-const PasswordChange = () => {
+const PasswordChange = ({ goHome, showSettingsSuccesMessage }) => {
     const { user } = useAuthContext();
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -25,6 +25,10 @@ const PasswordChange = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await updatePassword(user.user.customerId, oldPassword, newPassword, confirmNewPassword);
+        if (error !== null) {
+            goHome();
+            showSettingsSuccesMessage();
+        }
     }
 
     return (
@@ -72,6 +76,7 @@ const PasswordChange = () => {
                             onChange={(e) => setConfirmNewPassword(e.target.value)}
                             value={confirmNewPassword}
                         />
+                        {error && <div className='error'>{error}</div>}
                         <Button
                             type="submit"
                             fullWidth
