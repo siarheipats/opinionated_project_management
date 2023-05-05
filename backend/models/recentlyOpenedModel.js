@@ -101,5 +101,15 @@ async function getListByUserId(customerId) {
     return list;
 }
 
+async function updateRecentlyOpened(id, recentlyOpened) {
+    if (!recentlyOpened) {
+        throw Error('New Recently Opened List is not provided.');
+    }
+    await RecentlyOpened.update({
+        recentList: recentlyOpened
+    }, { where: { recentlyOpenedId: id } });
+}
+
 exports.addToTheList = addToTheList;
 exports.getListByUserId = getListByUserId;
+exports.updateRecentlyOpened = updateRecentlyOpened;

@@ -130,6 +130,14 @@ const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened })
             let newRecentlyOpened = recentlyOpened.recentList.replace(toDelete, "");
             recentlyOpened.recentList = newRecentlyOpened;
             setRecentlyOpened(recentlyOpened);
+            let id = recentlyOpened.recentlyOpenedId
+            let recentList = newRecentlyOpened;
+            await fetch('/api/recentlist/update', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, recentList })
+            });
+
         }
     }
 

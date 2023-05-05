@@ -25,4 +25,14 @@ const getCustomerList = async (req, res, next) => {
     }
 }
 
-module.exports = { addToTheList, getCustomerList }
+const updateRecentList = async (req, res) => {
+    const { id, recentList } = req.body;
+    try {
+        const response = await recentlyOpenedModel.updateRecentlyOpened(id, recentList);
+        res.status(200).json({ response });
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
+module.exports = { addToTheList, getCustomerList, updateRecentList }
