@@ -59,15 +59,11 @@ const Home = () => {
             return;
         }
         let myArray = x.split("|X|X|X|***");
-        console.log(`My Array Length: ${myArray.length}`)
         console.log(myArray);
         if (myArray.length === 5) {
-            console.log('I am triggered')
             myArray.pop();
             myArray.unshift(workspace);
-            console.log("My Array length after unshift")
             recentlyOpened.recentList = myArray.join("|X|X|X|***");
-            console.log(recentlyOpened.recentList);
             setRecentlyOpened(recentlyOpened);
         }
         else {

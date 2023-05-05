@@ -19,7 +19,7 @@ import CreateWorkspaceModal from './workspace_components/createWorkspaceModal';
 import WorkspacesList from '../components/workspace_components/workspacesList';
 import SharedWorkspaces from './peopleWorkspace_components/sharedWorkspaces';
 
-const Workspaces = ({ setSelectedWorkspace }) => {
+const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened }) => {
     const { user } = useAuthContext();
     const [workspaces, setWorkspaces] = useState([]);
     const [sharedWorkspaces, setSharedWorkspaces] = useState([]);
@@ -119,7 +119,17 @@ const Workspaces = ({ setSelectedWorkspace }) => {
         });
         if (response.ok) {
             const newWorkspaces = workspaces.filter(m => m.workspaceId !== workspaceId)
+            let workspaceToDelete = '';
+            for (let i = 0; i < workspaces.length; i++) {
+                if (workspaces[i].workspaceId === workspaceId) {
+                    workspaceToDelete = workspaces[i];
+                }
+            }
             setWorkspaces(newWorkspaces);
+            let toDelete = `${JSON.stringify(workspaceToDelete)}|X|X|X|***`;
+            let newRecentlyOpened = recentlyOpened.recentList.replace(toDelete, "");
+            recentlyOpened.recentList = newRecentlyOpened;
+            setRecentlyOpened(recentlyOpened);
         }
     }
 

@@ -169,7 +169,7 @@ const Dashboard = ({ notifications, setNotifications, updateNotifications, recen
                         }
                         {
                             showWorkspaces ? <Workspaces
-                                setSelectedWorkspace={setSelectedWorkspace} /> : null
+                                setSelectedWorkspace={setSelectedWorkspace} recentlyOpened={recentlyOpened} setRecentlyOpened={setRecentlyOpened} /> : null
                         }
                         {
                             showDashboardMain ? <DashboardMain openedWorkspace={openedWorkspace} closeWorkspace={closeWorkspace} recentlyOpened={recentlyOpened} setRecentlyOpened={setRecentlyOpened} setSelectedWorkspace={setSelectedWorkspace} /> : null
