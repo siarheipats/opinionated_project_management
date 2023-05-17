@@ -10,6 +10,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 
 
@@ -31,7 +33,11 @@ const Navbar = ({ notifications }) => {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        OPM
+                        <Link to="/">
+                            <Button sx={{ color: '#fff' }} startIcon={<AccountTreeIcon />}>
+                                OPM
+                            </Button>
+                        </Link>
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {user && (
