@@ -12,6 +12,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import EditIcon from '@mui/icons-material/Edit';
 import BoardsDetails from './board_components/boardDetails';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import Avatar from '@mui/material/Avatar';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 
 const Demo = styled('div')(({ theme }) => ({
@@ -232,12 +235,18 @@ const BoardsMain = ({ workspaceId }) => {
                     return (
                         <List key={index}>
                             <ListItem>
-
+                                <ListItemAvatar>
+                                    <Avatar sx={{ mr: 1 }}>
+                                        <DashboardIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
                                 <ListItemText
                                     primary={board.boardName}
                                     secondary={board.dateCreated}
                                 />
+
                                 <Button
+                                    sx={{ ml: 1 }}
                                     variant="contained"
                                     color="secondary"
                                     startIcon={<FolderOpenIcon />}
@@ -246,6 +255,7 @@ const BoardsMain = ({ workspaceId }) => {
                                     Open
                                 </Button>
                                 <Button
+                                    sx={{ ml: 1 }}
                                     variant="contained"
                                     color="secondary"
                                     startIcon={<EditIcon />}
@@ -257,6 +267,7 @@ const BoardsMain = ({ workspaceId }) => {
                                     Update
                                 </Button>
                                 <Button
+                                    sx={{ ml: 1 }}
                                     variant="contained"
                                     color="secondary"
                                     startIcon={<DeleteIcon />}

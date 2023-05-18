@@ -13,6 +13,11 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
 
 // Components
 import CreateWorkspaceModal from './workspace_components/createWorkspaceModal';
@@ -25,10 +30,29 @@ const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened })
     const [sharedWorkspaces, setSharedWorkspaces] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [tabValue, setTabValue] = React.useState(0);
+    const [openSnackBar, setOpenSnackBar] = React.useState(false);
+    const [snackMessage, setSnackMessage] = React.useState("")
     const theme = createTheme();
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackBar(false);
+    };
+
+    const openSuccess = (snackMessage) => {
+        setSnackMessage(snackMessage);
+        setOpenSnackBar(true);
+    };
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
@@ -103,12 +127,14 @@ const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened })
             }
         }
         fetchWorkspaces();
+        openSuccess("Workspace Name was successfully changed!")
     }
 
     const addWorkspaces = (workspace) => {
         workspaces.push(workspace);
         setWorkspaces(workspaces);
         handleCloseModal();
+        openSuccess("Succesfully added a new workspace to your list.");
     }
 
     const deleteWorkspace = async (workspaceId) => {
@@ -126,6 +152,7 @@ const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened })
                 }
             }
             setWorkspaces(newWorkspaces);
+            openSuccess("Succesfully removed a workspace from your list.");
             let toDelete = `${JSON.stringify(workspaceToDelete)}|X|X|X|***`;
             let newRecentlyOpened = recentlyOpened.recentList.replace(toDelete, "");
             recentlyOpened.recentList = newRecentlyOpened;
@@ -195,6 +222,14 @@ const Workspaces = ({ setSelectedWorkspace, recentlyOpened, setRecentlyOpened })
                 showModal={showModal}
                 handleCloseModalFunction={handleCloseModal}
                 addWorkspaces={addWorkspaces} />
+
+            <Stack spacing={2} sx={{ width: '100%' }}>
+                <Snackbar open={openSnackBar} autoHideDuration={1500} onClose={handleCloseSnackbar}>
+                    <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                        {snackMessage}
+                    </Alert>
+                </Snackbar>
+            </Stack>
         </ThemeProvider>
     );
 }

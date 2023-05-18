@@ -31,28 +31,22 @@ const WorkspacesList = ({ workspacesList, deleteWorkspace, updateWorkspaces, set
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+            <Box sx={{ flexGrow: 1 }}>
                 {
                     workspacesList.length === 0 && <div>You don't have any Workspaces created.</div>
                 }
                 {
                     workspacesList.length > 0 &&
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
-                            <Demo>
-                                <List dense={false}>
-                                    {workspacesList.map((workspace, index) =>
-                                        <Workspace
-                                            workspaceDetails={workspace}
-                                            deleteWorkspace={deleteWorkspace}
-                                            editWorkspace={handleOpenModal}
-                                            setWorkspaceToEdit={setWorkspaceToEdit}
-                                            setSelectedWorkspace={setSelectedWorkspace} />
-                                    )}
-                                </List>
-                            </Demo>
-                        </Grid>
-                    </Grid>
+                    <List dense={false}>
+                        {workspacesList.map((workspace, index) =>
+                            <Workspace
+                                workspaceDetails={workspace}
+                                deleteWorkspace={deleteWorkspace}
+                                editWorkspace={handleOpenModal}
+                                setWorkspaceToEdit={setWorkspaceToEdit}
+                                setSelectedWorkspace={setSelectedWorkspace} />
+                        )}
+                    </List>
                 }
                 <EditWorkspaceModal
                     showModal={showModal}

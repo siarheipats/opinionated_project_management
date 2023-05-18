@@ -64,7 +64,11 @@ const Notifications = ({ notifications, setNotifications, updateNotifications })
 
 
                 <Paper style={{ overflow: 'auto' }}>
+
                     <List>
+                        {
+                            notifications.length === 0 && (<div>You are up to date with you notifications.</div>)
+                        }
                         {
                             notifications?.map((notification, i) =>
                                 <ListItem
