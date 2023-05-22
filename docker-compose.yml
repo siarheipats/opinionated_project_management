@@ -1,15 +1,15 @@
-  version: '3.8'
+version: '3.9'
 
 services: 
     mysqldb:
         image: mysql:5.7
         restart: unless-stopped
-        env_file: ./.env
+        env_file: ./backend/.env
         environment:      
           - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
           - MYSQL_DATABASE=$MYSQLDB_DATABASE
         ports:
-          - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+          - "3306:3306"
         volumes:
           - db:/var/lib/mysql
         networks:
@@ -17,11 +17,15 @@ services:
     backend:
       depends_on:
          - mysqldb
-      build: ./backend
+      build: 
+          context: ./backend
+          dockerfile: Dockerfile
+
+      container_name: backend
       restart: unless-stopped
-      env_file: ./.env
+      env_file: ./backend/.env
       ports:
-        - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+        - "4000:4000"
       environment:
         - DB_HOST=mysqldb
         - DB_USER=$MYSQLDB_USER
@@ -34,13 +38,15 @@ services:
         - frontend
     frontend:
       depends_on:
-        - frontend
+        - backend
       build:
         context: ./frontend
+        dockerfile: Dockerfile
         args:
           - REACT_APP_API_BASE_URL=$CLIENT_API_BASE_URL
+      container_name: frontend
       ports:
-        - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+        - "3000:3000"
       networks:
         - frontend  
 
