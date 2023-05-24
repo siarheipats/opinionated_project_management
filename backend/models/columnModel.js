@@ -64,9 +64,20 @@ async function deleteColumns(columnId) {
         throw Error("All fields must be filled.")
     }
 
+    query = `SET FOREIGN_KEY_CHECKS = 0`
+    await sequelize.query(query);
+
     await Columns.destroy({
         where: {
             columnId: columnId
+        }
+    })
+}
+
+async function deleteColumnsByBoardId(boardId) {
+    await Columns.destroy({
+        where: {
+            boardId: boardId
         }
     })
 }
@@ -75,4 +86,5 @@ exports.createColumns = createColumns;
 exports.readColumns = readColumns;
 exports.updateColumns = updateColumns;
 exports.deleteColumns = deleteColumns;
+exports.deleteColumnsByBoardId = deleteColumnsByBoardId;
 exports.Columns = Columns;

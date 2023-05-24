@@ -1,6 +1,7 @@
 const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
 const Workspaces = require("./workspaceModel");
+const ColumnModel = require("./columnModel");
 
 const Boards = sequelize.define("Boards", {
     boardId: {
@@ -68,9 +69,20 @@ async function deleteBoard(boardId) {
         throw Error("All fields must be filled.")
     }
 
+    query = `SET FOREIGN_KEY_CHECKS = 0`
+    await sequelize.query(query);
+
     await Boards.destroy({
         where: {
             boardId: boardId
+        }
+    })
+}
+
+async function deleteBoardByWorkspaceID(workspaceId) {
+    await Boards.destroy({
+        where: {
+            workspaceId: workspaceId
         }
     })
 }
@@ -79,4 +91,5 @@ exports.createBoard = createBoard;
 exports.getBoard = getBoard;
 exports.updateBoard = updateBoard;
 exports.deleteBoard = deleteBoard;
+exports.deleteBoardByWorkspaceID = deleteBoardByWorkspaceID;
 exports.Boards = Boards;

@@ -80,6 +80,9 @@ async function deleteTask(taskId) {
         throw Error("All fields must be filled.")
     }
 
+    query = `SET FOREIGN_KEY_CHECKS = 0`
+    await sequelize.query(query);
+
     await Tasks.destroy({
         where: {
             taskId: taskId

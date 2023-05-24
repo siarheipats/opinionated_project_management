@@ -36,6 +36,7 @@ const deleteWorkspace = async (req, res) => {
         const response = await workspaceModel.deleteWorkspace(workspaceId);
         res.status(200).json({ response });
     } catch (error) {
+        console.log(error)
         res.status(400).json({ error: error.message })
     }
 }

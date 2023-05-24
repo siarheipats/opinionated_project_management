@@ -1,6 +1,8 @@
 const { DataTypes, where } = require('sequelize');
 const { sequelize } = require("../db_connector");
 
+const BoardModel = require("./boardModel")
+
 const Workspaces = sequelize.define("Workspaces", {
     workspaceId: {
         type: DataTypes.INTEGER,
@@ -78,20 +80,24 @@ async function updateWorkspaceDetails(workspaceId, workspaceName) {
             workspaceId: workspaceId
         }
     })
+
+    BoardModel.deleteBoard
 }
 
 async function deleteWorkspace(workspaceId) {
     if (!workspaceId) {
         throw Error("All fields must be filled.")
     }
+    console.log(workspaceId)
+
+    query = `SET FOREIGN_KEY_CHECKS = 0`
+    await sequelize.query(query);
 
     await CustomerWorkspaces.destroy({
         where: {
             workspaceId: workspaceId
         }
     });
-    // If we would like to archive workspaces instead of deleting them
-    // this is the place to do it
     await Workspaces.destroy({
         where: {
             workspaceId: workspaceId

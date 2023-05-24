@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 CREATE TABLE IF NOT EXISTS `opm`.`Customers` (
   `customerId` INT AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
