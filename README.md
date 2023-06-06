@@ -43,3 +43,22 @@ Executing (default): SELECT `customerId`, `email`, `phoneNumber`, `firstName`, `
 The App's backend is runs on port 4000 while the frontend is on port 3000.
 
 db.sql contains the queries for the db. Please update it as you continue developing the database.
+
+
+## Running the app under docker
+
+for the purpose of development and testing the App could also be ran under docker. 
+
+first make sure to install docker and docker-compose according to the official instructions here:
+https://docs.docker.com/engine/install/
+
+https://docs.docker.com/compose/install/
+
+After finishing the installation of docker and docker-compose, the App can be ran using the following commands:
+
+```
+[~/opinionated_project_management/backend$] docker-compose up
+
+```
+
+it should take few minutes the first time, since it will installing nodejs and reactjs packages, if any errors occur afterwards, please make sure that ports 4000/3000 are not being used by other applications. to turn off the the app running under docker you can press ctrl+c inside the terminal.
